@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InputSystem
+namespace Loyufei.InputSystem
 {
     /// <summary>
     /// 更換輸入重疊時動作種類

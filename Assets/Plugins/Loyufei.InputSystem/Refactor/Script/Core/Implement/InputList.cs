@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace InputSystem
+namespace Loyufei.InputSystem
 {
     internal class InputList : MonoBehaviour, IInputList, IInputBindings
     {
@@ -19,6 +19,9 @@ namespace InputSystem
 
         #region Properties
 
+        /// <summary>
+        /// 標示輸入的順序
+        /// </summary>
         public int Index => _Index;
 
         #endregion
@@ -40,7 +43,16 @@ namespace InputSystem
         #region Public Methods
 
         /// <summary>
-        /// f\新增Binding
+        /// 設置輸入的 Index 順序
+        /// </summary>
+        /// <param name="index"></param>
+        public void SetIndex(int index) 
+        {
+            _Index = index;
+        }
+
+        /// <summary>
+        /// 新增Binding
         /// </summary>
         /// <param name="pair"></param>
         /// <returns></returns>
@@ -181,7 +193,7 @@ namespace InputSystem
 
         public bool TryGet(int uuid, out BindingPair value)
         {
-            value = _Bindings.SingleOrDefault(p => p.UUID == uuid);
+            value = _Bindings.SingleOrDefault(p => p.UUID == uuid) ?? new(0, KeyCode.None);
 
             return value != null;
         }

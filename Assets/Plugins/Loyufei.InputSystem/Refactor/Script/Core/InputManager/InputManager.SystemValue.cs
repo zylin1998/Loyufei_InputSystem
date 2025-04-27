@@ -3,11 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
-namespace InputSystem
+namespace Loyufei.InputSystem
 {
     public partial class InputManager
     {
+        #region Static Constructor
+
+        static InputManager() 
+        {
+            Instance = new GameObject("InputManager").AddComponent<InputManager>();
+
+            DontDestroyOnLoad(Instance);
+        }
+
+        #endregion
+
         #region Private Static Field
 
         private static int _Index;
@@ -15,6 +27,11 @@ namespace InputSystem
         #endregion
 
         #region Const Fields
+
+        /// <summary>
+        /// InputManager 單例實作
+        /// </summary>
+        public static InputManager Instance { get; private set; }
 
         /// <summary>
         /// 最小輸入存取總數
@@ -50,6 +67,11 @@ namespace InputSystem
         /// </summary>
         public static IInputList DefaultInputs { get; set; } = IInputList.Default;
 
+        /// <summary>
+        /// 初始輸入軸
+        /// </summary>
+        public static IInputAxis DefaultAxis   { get; set; } = IInputAxis.Default;
+ 
         /// <summary>
         /// 輸入更換重疊時動作選擇
         /// </summary>

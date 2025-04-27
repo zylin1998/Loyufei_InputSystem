@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace InputSystem
+namespace Loyufei.InputSystem
 {
     [Serializable]
-    public struct InputPair
+    internal class BindingPair
     {
         #region Fields
 
@@ -34,9 +34,28 @@ namespace InputSystem
 
         #region Constructor
 
-        public InputPair(int uuid, KeyCode keyCode)
+        public BindingPair(int uuid, KeyCode keyCode)
         {
-            _UUID = uuid;
+            Reset(uuid, keyCode);
+        }
+
+        public BindingPair(InputPair pair) 
+        {
+            Reset(pair.UUID, pair.KeyCode);
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        public void Reset(int uuid, KeyCode keyCode) 
+        {
+            _UUID    = uuid;
+            _KeyCode = keyCode;
+        }
+
+        public void Reset(KeyCode keyCode)
+        {
             _KeyCode = keyCode;
         }
 
