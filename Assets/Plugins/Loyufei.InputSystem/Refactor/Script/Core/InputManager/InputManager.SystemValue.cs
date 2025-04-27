@@ -68,11 +68,6 @@ namespace Loyufei.InputSystem
         public static IInputList DefaultInputs { get; set; } = IInputList.Default;
 
         /// <summary>
-        /// 初始輸入軸
-        /// </summary>
-        public static IInputAxis DefaultAxis   { get; set; } = IInputAxis.Default;
- 
-        /// <summary>
         /// 輸入更換重疊時動作選擇
         /// </summary>
         public static ESameEncounter SameEncounter { get; set; } = ESameEncounter.None;

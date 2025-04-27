@@ -13,9 +13,9 @@ namespace Loyufei.InputSystem
 
         internal Dictionary<string, IAxis> AxisDictionary { get; } = new();
 
-        public void Binding(IInputAxis axis, IInputBindings bindings)
+        public void Binding(IEnumerable<AxisPair> axis, IInputBindings bindings)
         {
-            foreach (var pair in axis.GetPairs()) 
+            foreach (var pair in axis) 
             {
                 AxisDictionary.Add(pair.AxisName, new Axis(pair, bindings));
             }

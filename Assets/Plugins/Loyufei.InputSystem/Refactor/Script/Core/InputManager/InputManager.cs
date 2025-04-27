@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Loyufei.InputSystem
@@ -13,6 +14,11 @@ namespace Loyufei.InputSystem
 
         internal Dictionary<int, IInput> Inputs { get; } = new();
 
+        public void SetAxis(IInputAxis inputAxis) 
+        {
+            _Axis = inputAxis.GetPairs().ToList();
+        }
+
         /// <summary>
         /// 取得或新增輸入
         /// </summary>
@@ -25,7 +31,7 @@ namespace Loyufei.InputSystem
             {
                 input = new InputBase();
 
-                if (input is IInputBinder binder) { binder.Binding(DefaultAxis, GetList(index)); }
+                if (input is IInputBinder binder) { binder.Binding(_Axis, GetList(index)); }
 
                 Inputs.TryAdd(index, input);
             }
@@ -47,6 +53,7 @@ namespace Loyufei.InputSystem
             list = new GameObject("InputList" + index).AddComponent<InputList>();
 
             list.SetIndex(index);
+            list.Init(DefaultInputs);
 
             list.transform.SetParent(transform);
 

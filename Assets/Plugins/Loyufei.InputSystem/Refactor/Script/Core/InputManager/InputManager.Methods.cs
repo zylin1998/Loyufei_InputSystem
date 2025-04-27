@@ -10,6 +10,11 @@ namespace Loyufei.InputSystem
     {
         #region Public Static Mothods
 
+        public static void SetDefaultAxis(IInputAxis inputAxis) 
+        {
+            Instance.SetAxis(inputAxis);
+        }
+
         public static bool ValidIndex(int index)
         {
             if (index < minIndex) { return false; }

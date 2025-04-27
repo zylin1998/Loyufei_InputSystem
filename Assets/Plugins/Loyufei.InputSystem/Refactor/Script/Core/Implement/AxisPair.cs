@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Loyufei.InputSystem
 {
+    [Serializable]
     public class AxisPair
     {
         [SerializeField]
@@ -17,7 +18,7 @@ namespace Loyufei.InputSystem
         private int    _NegativeIndex;
         [SerializeField]
         private bool   _Revert;
-        [SerializeField]
+        [SerializeField, Range(0.01f, 1f)]
         private float  _Sensitive;
 
         public string AxisName      => _AxisName;

@@ -8,6 +8,6 @@ namespace Loyufei.InputSystem
 {
     internal interface IInputBinder
     {
-        public void Binding(IInputAxis axis, IInputBindings bindings);
+        public void Binding(IEnumerable<AxisPair> axis, IInputBindings bindings);
     }
 }

@@ -53,8 +53,8 @@ namespace Loyufei.InputSystem
             {
                 if (Input.GetKeyDown(Positive.KeyCode) && _AxisRaw ==  0f) { return (_AxisRaw =  1f); }
                 if (Input.GetKeyDown(Negative.KeyCode) && _AxisRaw ==  0f) { return (_AxisRaw = -1f); }
-                if (Input.GetKeyUp  (Positive.KeyCode) && _AxisRaw ==  1f) { return (_AxisRaw =  0f); }
-                if (Input.GetKeyDown(Negative.KeyCode) && _AxisRaw == -1f) { return (_AxisRaw =  0f); }
+                if (Input.GetKeyUp  (Positive.KeyCode) && _AxisRaw >   0f) { return (_AxisRaw =  0f); }
+                if (Input.GetKeyUp  (Negative.KeyCode) && _AxisRaw <   0f) { return (_AxisRaw =  0f); }
 
                 return _AxisRaw;
             }
