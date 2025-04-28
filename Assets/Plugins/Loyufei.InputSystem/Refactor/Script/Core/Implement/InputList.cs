@@ -195,7 +195,7 @@ namespace Loyufei.InputSystem
         {
             value = _Bindings.SingleOrDefault(p => p.UUID == uuid) ?? new(0, KeyCode.None);
 
-            return value != null;
+            return value.UUID == uuid;
         }
 
         #endregion

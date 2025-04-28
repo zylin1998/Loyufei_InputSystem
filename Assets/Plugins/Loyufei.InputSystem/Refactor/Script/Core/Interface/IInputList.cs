@@ -8,6 +8,10 @@ namespace Loyufei.InputSystem
 {
     public interface IInputList
     {
+        /// <summary>
+        /// 以外部清單初始化清單
+        /// </summary>
+        /// <param name="inputList"></param>
         public void Init(IInputList inputList);
 
         /// <summary>

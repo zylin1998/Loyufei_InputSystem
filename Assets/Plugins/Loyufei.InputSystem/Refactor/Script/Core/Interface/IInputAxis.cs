@@ -8,8 +8,15 @@ namespace Loyufei.InputSystem
 {
     public interface IInputAxis
     {
+        /// <summary>
+        /// 取得所有輸入軸資訊
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<AxisPair> GetPairs();
 
+        /// <summary>
+        /// 預設輸入軸資訊
+        /// </summary>
         public static IInputAxis Default { get; } = new DefaultPairs();
 
         private class DefaultPairs : IInputAxis 

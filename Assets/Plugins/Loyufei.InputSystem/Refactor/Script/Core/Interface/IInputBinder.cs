@@ -8,6 +8,11 @@ namespace Loyufei.InputSystem
 {
     internal interface IInputBinder
     {
+        /// <summary>
+        /// 將輸入軸及榜定資訊結合綁定
+        /// </summary>
+        /// <param name="axis"></param>
+        /// <param name="bindings"></param>
         public void Binding(IEnumerable<AxisPair> axis, IInputBindings bindings);
     }
 }

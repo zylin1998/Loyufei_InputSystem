@@ -8,6 +8,10 @@ namespace Loyufei.InputSystem
 {
     public interface IAxis
     {
+        /// <summary>
+        /// 取得輸入軸的值
+        /// </summary>
+        /// <returns></returns>
         public AxisValue GetValue();
     }
 }

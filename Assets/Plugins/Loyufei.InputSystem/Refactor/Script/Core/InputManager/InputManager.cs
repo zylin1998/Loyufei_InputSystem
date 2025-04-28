@@ -1,20 +1,49 @@
+using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Loyufei.InputSystem
 {
     public partial class InputManager : MonoBehaviour
     {
         [SerializeField]
-        private List<InputList> _InputLists = new();
-        [SerializeField]
         private List<AxisPair>  _Axis       = new();
+        [SerializeField]
+        private UIControlInput  _UIControl;
+        [SerializeField]
+        private List<InputList> _InputLists = new();
 
         internal Dictionary<int, IInput> Inputs { get; } = new();
 
-        public void SetAxis(IInputAxis inputAxis) 
+        private void Awake()
+        {
+            var inputModule = EventSystem.current?.GetComponent<BaseInputModule>();
+
+            if (inputModule)
+            {
+                _UIControl = inputModule.gameObject.AddComponent<UIControlInput>();
+                
+                inputModule.inputOverride = _UIControl;
+            }
+        }
+
+        /// <summary>
+        /// 設置UI控制輸入需要的輸入索引
+        /// </summary>
+        /// <param name="index"></param>
+        internal void SetUIControl(int index) 
+        {
+            _UIControl.SetIndex(index, Inputs[index]);
+        }
+
+        /// <summary>
+        /// 設置輸入軸資訊
+        /// </summary>
+        /// <param name="inputAxis"></param>
+        internal void SetAxis(IInputAxis inputAxis) 
         {
             _Axis = inputAxis.GetPairs().ToList();
         }
@@ -23,7 +52,7 @@ namespace Loyufei.InputSystem
         /// 取得或新增輸入
         /// </summary>
         /// <param name="index"></param>
-        public IInput GetInput(int index) 
+        internal IInput GetInput(int index) 
         {
             var exist = Inputs.TryGetValue(index, out var input);
 
