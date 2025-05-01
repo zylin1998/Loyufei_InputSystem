@@ -1,0 +1,48 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Loyufei.InputSystem
+{
+    internal class InputBase : IInput, IInputBinder
+    {
+        #region Constructor
+
+        public InputBase() 
+        {
+
+        }
+
+        public InputBase(IAxisConstructor constructor)
+        {
+            AxisConstructor = constructor;
+        }
+
+        #endregion
+
+        #region Internal Properties
+
+        internal Dictionary<string, IAxis> AxisDictionary { get; } = new();
+
+        #endregion
+
+        #region Public Properties
+
+        public AxisValue this[string axisName] 
+            => AxisDictionary.TryGetValue(axisName, out var axis) ? axis.GetValue() : new AxisValue();
+
+        public IAxisConstructor AxisConstructor { get; set; } = new KeyCodeAxisConstructor();
+
+        #endregion
+
+        public void Binding(IEnumerable<AxisPair> axis, IInputBindings bindings)
+        {
+            foreach (var pair in axis) 
+            {
+                AxisDictionary.Add(pair.AxisName, AxisConstructor.Construct(pair, bindings));
+            }
+        }
+    }
+}

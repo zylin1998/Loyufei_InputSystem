@@ -7,70 +7,63 @@ using UnityEngine;
 
 namespace Loyufei.InputSystem
 {
-    public partial class InputManager
+    public static partial class InputManager
     {
-        #region Static Constructor
-
-        static InputManager() 
-        {
-            Instance = new GameObject("InputManager").AddComponent<InputManager>();
-
-            DontDestroyOnLoad(Instance);
-        }
-
-        #endregion
-
         #region Private Static Field
 
-        private static int _Index;
-
-        #endregion
-
-        #region Const Fields
-
-        /// <summary>
-        /// InputManager 單例實作
-        /// </summary>
-        public static InputManager Instance { get; private set; }
-
-        /// <summary>
-        /// 最小輸入存取總數
-        /// </summary>
-        public const int minIndex = 1;
-
-        /// <summary>
-        /// 最大輸入存取總數
-        /// </summary>
-        public const int maxIndex = 4;
+        private static InternalTaskDispatcher _Instance;
 
         #endregion
 
         #region Static Properties
 
         /// <summary>
+        /// InputManager 單例實作
+        /// </summary>
+        public static InternalTaskDispatcher Instance 
+        {
+            get 
+            {
+                if (!_Instance) 
+                {
+                    _Instance = new GameObject("InputManager").AddComponent<InternalTaskDispatcher>();
+
+                    GameObject.DontDestroyOnLoad(_Instance);
+                }
+
+                return _Instance;
+            } 
+        }
+
+        /// <summary>
         /// 自訂輸入存取數量
         /// </summary>
         public static int IndexCount
         {
-            get => _Index;
+            get => Instance.IndexCount;
 
-            set
-            {
-                _Index = value < minIndex ? minIndex : value;
-
-                _Index = value > maxIndex ? maxIndex : value;
-            }
+            set => Instance.IndexCount = value;
         }
 
         /// <summary>
         /// 初始輸入欄
         /// </summary>
-        public static IInputList DefaultInputs { get; set; } = IInputList.Default;
+        public static IInputList DefaultInputs 
+        { 
+            get => Instance.DefaultInputs; 
+            
+            set => Instance.DefaultInputs = value; 
+        }
 
         /// <summary>
         /// 輸入更換重疊時動作選擇
         /// </summary>
-        public static ESameEncounter SameEncounter { get; set; } = ESameEncounter.None;
+        public static ESameEncounter SameEncounter
+        {
+            get => Instance.SameEncounter; 
+            
+            set => Instance.SameEncounter = value; 
+        }
 
         #endregion
     }

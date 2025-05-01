@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Loyufei.InputSystem
 {
-    internal interface IInputBinder
+    public interface IInputBinder
     {
         /// <summary>
         /// 將輸入軸及榜定資訊結合綁定

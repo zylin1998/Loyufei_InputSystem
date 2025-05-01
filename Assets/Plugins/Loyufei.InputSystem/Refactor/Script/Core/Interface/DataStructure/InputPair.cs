@@ -13,9 +13,9 @@ namespace Loyufei.InputSystem
         #region Fields
 
         [SerializeField]
-        private int     _UUID;
+        private int        _UUID;
         [SerializeField]
-        private KeyCode _KeyCode;
+        private EInputCode _InputCode;
 
         #endregion
 
@@ -24,20 +24,20 @@ namespace Loyufei.InputSystem
         /// <summary>
         /// 通用唯一辨識碼
         /// </summary>
-        public int     UUID    => _UUID;
+        public int UUID => _UUID;
         /// <summary>
-        /// Unity輸入
+        /// Unity InputSystem 和 XInputDonet 橋接輸入
         /// </summary>
-        public KeyCode KeyCode => _KeyCode;
+        public EInputCode InputCode => _InputCode;
 
         #endregion
 
         #region Constructor
 
-        public InputPair(int uuid, KeyCode keyCode)
+        public InputPair(int uuid, EInputCode inputCode)
         {
-            _UUID = uuid;
-            _KeyCode = keyCode;
+            _UUID      = uuid;
+            _InputCode = inputCode;
         }
 
         #endregion

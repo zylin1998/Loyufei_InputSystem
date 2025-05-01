@@ -30,5 +30,20 @@ namespace Loyufei.InputSystem
         {
             return self[axisName].KeyUp;
         }
+
+        public static bool GetKeyDown(this IInput self, KeyCode keyCode) 
+        {
+            return Input.GetKeyDown(keyCode);
+        }
+
+        public static bool GetKey(this IInput self, KeyCode keyCode)
+        {
+            return Input.GetKey(keyCode);
+        }
+
+        public static bool GetKeyUp(this IInput self, KeyCode keyCode)
+        {
+            return Input.GetKeyUp(keyCode);
+        }
     }
 }

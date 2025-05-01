@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Loyufei.InputSystem
 {
-    internal interface IInputBindings
+    public interface IInputBindings
     {
         /// <summary>
         /// 以通用唯一辨識碼尋找綁定資訊

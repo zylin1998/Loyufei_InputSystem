@@ -11,7 +11,9 @@ namespace Loyufei.InputSystem
         #region Fields
 
         [SerializeField]
-        private int _Index;
+        private int               _Index;
+        [SerializeField]
+        private EInputType        _InputType;
         [SerializeField]
         private List<BindingPair> _Bindings = new();
 
@@ -20,9 +22,14 @@ namespace Loyufei.InputSystem
         #region Properties
 
         /// <summary>
-        /// 標示輸入的順序
+        /// 標示輸入的索引
         /// </summary>
-        public int Index => _Index;
+        public int        Index     => _Index;
+
+        /// <summary>
+        /// 顯示該清單服務的輸入平台。
+        /// </summary>
+        public EInputType InputType => _InputType;
 
         #endregion
 
@@ -49,6 +56,15 @@ namespace Loyufei.InputSystem
         public void SetIndex(int index) 
         {
             _Index = index;
+        }
+
+        /// <summary>
+        /// 更改輸入平台。
+        /// </summary>
+        /// <param name="type"></param>
+        public void SetInputType(EInputType type) 
+        {
+            _InputType = type;
         }
 
         /// <summary>
@@ -88,13 +104,13 @@ namespace Loyufei.InputSystem
         /// <param name="keyCode"></param>
         /// <param name="onSame"></param>
         /// <returns></returns>
-        public bool ChangeInput(int uuid, KeyCode keyCode, ESameEncounter onSame)
+        public bool ChangeInput(int uuid, EInputCode inputCode, ESameEncounter onSame)
         {
             var exist = TryGet(uuid, out var binding);
 
             if (exist)
             {
-                return Strategy[onSame].Invoke(binding, keyCode);
+                return Strategy[onSame].Invoke(binding, inputCode);
             }
 
             return exist;
@@ -107,7 +123,7 @@ namespace Loyufei.InputSystem
         /// <summary>
         /// 輸入檢查策略
         /// </summary>
-        private Dictionary<ESameEncounter, Func<BindingPair, KeyCode, bool>> Strategy;
+        private Dictionary<ESameEncounter, Func<BindingPair, EInputCode, bool>> Strategy;
 
         /// <summary>
         /// 若輸入重複則回傳失敗
@@ -115,13 +131,13 @@ namespace Loyufei.InputSystem
         /// <param name="uuid"></param>
         /// <param name="keyCode"></param>
         /// <returns></returns>
-        private bool None(BindingPair binding, KeyCode keyCode)
+        private bool None(BindingPair binding, EInputCode inputCode)
         {
-            var same = _Bindings.Find(b => b.KeyCode == keyCode);
+            var same = _Bindings.Find(b => b.InputCode == inputCode);
 
             if (same != null) { return false; }
 
-            binding.Reset(keyCode);
+            binding.Reset(inputCode);
 
             return true;
         }
@@ -132,13 +148,13 @@ namespace Loyufei.InputSystem
         /// <param name="uuid"></param>
         /// <param name="keyCode"></param>
         /// <returns></returns>
-        private bool Delete(BindingPair binding, KeyCode keyCode) 
+        private bool Delete(BindingPair binding, EInputCode inputCode) 
         {
-            var same = _Bindings.Find(b => b.KeyCode == keyCode);
+            var same = _Bindings.Find(b => b.InputCode == inputCode);
 
-            if (same != null) { same.Reset(KeyCode.None); }
+            if (same != null) { same.Reset(EInputCode.None); }
 
-            binding.Reset(keyCode);
+            binding.Reset(inputCode);
 
             return true;
         }
@@ -149,13 +165,13 @@ namespace Loyufei.InputSystem
         /// <param name="uuid"></param>
         /// <param name="keyCode"></param>
         /// <returns></returns>
-        private bool Exchange(BindingPair binding, KeyCode keyCode)
+        private bool Exchange(BindingPair binding, EInputCode inputCode)
         {
-            var same = _Bindings.Find(b => b.KeyCode == keyCode);
+            var same = _Bindings.Find(b => b.InputCode == inputCode);
 
-            if (same != null) { same.Reset(binding.KeyCode); }
+            if (same != null) { same.Reset(binding.InputCode); }
 
-            binding.Reset(keyCode);
+            binding.Reset(inputCode);
 
             return true;
         }
@@ -174,7 +190,7 @@ namespace Loyufei.InputSystem
 
         public IEnumerable<InputPair> GetPairs()
         {
-            return _Bindings.Select(b => new InputPair(b.UUID, b.KeyCode));
+            return _Bindings.Select(b => new InputPair(b.UUID, b.InputCode));
         }
 
         #endregion
@@ -193,7 +209,7 @@ namespace Loyufei.InputSystem
 
         public bool TryGet(int uuid, out BindingPair value)
         {
-            value = _Bindings.SingleOrDefault(p => p.UUID == uuid) ?? new(0, KeyCode.None);
+            value = _Bindings.SingleOrDefault(p => p.UUID == uuid) ?? new(0, EInputCode.None);
 
             return value.UUID == uuid;
         }
