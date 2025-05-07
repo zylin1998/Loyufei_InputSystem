@@ -9,11 +9,6 @@ namespace Loyufei.InputSystem
     public interface IInputList
     {
         /// <summary>
-        /// 輸入清單索引
-        /// </summary>
-        public int Index { get; }
-
-        /// <summary>
         /// 以外部清單初始化清單
         /// </summary>
         /// <param name="inputList"></param>
