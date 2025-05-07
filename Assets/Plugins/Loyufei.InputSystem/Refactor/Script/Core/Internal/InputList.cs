@@ -67,25 +67,6 @@ namespace Loyufei.InputSystem
             _InputType = type;
         }
 
-        /// <summary>
-        /// 更換輸入並檢查重複
-        /// </summary>
-        /// <param name="uuid"></param>
-        /// <param name="keyCode"></param>
-        /// <param name="onSame"></param>
-        /// <returns></returns>
-        public bool ChangeInput(int uuid, EInputCode inputCode, ESameEncounter onSame)
-        {
-            var exist = TryGet(uuid, out var binding);
-
-            if (exist)
-            {
-                return Strategy[onSame].Invoke(binding, inputCode);
-            }
-
-            return exist;
-        }
-
         #endregion
 
         #region Private Methods
@@ -182,6 +163,25 @@ namespace Loyufei.InputSystem
             value = _Bindings.SingleOrDefault(p => p.UUID == uuid) ?? new(0, EInputCode.None);
 
             return value.UUID == uuid;
+        }
+
+        /// <summary>
+        /// 更換輸入並檢查重複
+        /// </summary>
+        /// <param name="uuid"></param>
+        /// <param name="keyCode"></param>
+        /// <param name="onSame"></param>
+        /// <returns></returns>
+        public bool Rebinding(int uuid, EInputCode inputCode, ESameEncounter onSame)
+        {
+            var exist = TryGet(uuid, out var binding);
+
+            if (exist)
+            {
+                return Strategy[onSame].Invoke(binding, inputCode);
+            }
+
+            return exist;
         }
 
         #endregion

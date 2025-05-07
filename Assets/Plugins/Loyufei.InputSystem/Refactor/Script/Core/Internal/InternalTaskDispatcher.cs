@@ -130,7 +130,7 @@ namespace Loyufei.InputSystem
 
             if (!exist)
             {
-                var constructor = AxisConstructorFactory.Create(inputType);
+                var constructor = AxisConstructStrategy.GetConstructor(inputType);
 
                 input = new InputBase(constructor, inputType, index);
 
@@ -167,6 +167,26 @@ namespace Loyufei.InputSystem
         }
 
         /// <summary>
+        /// 切換輸入頻道的綁定清單
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="listIndex"></param>
+        /// <returns></returns>
+        internal bool SwitchList(IInput input, int listIndex) 
+        {
+            if (input is IInputBinder binder) 
+            {
+                var list = FetchList(listIndex, input.InputType);
+
+                binder.Binding(_Axis, list);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// 重置清單的數量
         /// </summary>
         /// <param name="size"></param>
@@ -186,14 +206,26 @@ namespace Loyufei.InputSystem
         {
             if (input is IInputBinder binder) 
             {
-                var code = await AwaitInputCodeDown();
+                var code = await AwaitInputCodeDown(input);
 
-                var list = binder.Bindings as InputList;
+                var list = binder.Bindings;
                 
-                return list.ChangeInput(uuid, code, SameEncounter);
+                return list.Rebinding(uuid, code, SameEncounter);
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// 取得當前所有輸入清單的資訊
+        /// </summary>
+        /// <returns></returns>
+        internal InputPair[][] GetAllList() 
+        {
+            return _InputLists
+                .OrderBy(key => key.InputType)
+                .Select(list => list.GetPairs().ToArray())
+                .ToArray();
         }
 
         #endregion
@@ -229,33 +261,20 @@ namespace Loyufei.InputSystem
         /// 異步等待按鍵被按下
         /// </summary>
         /// <returns></returns>
-        private async Task<EInputCode> AwaitInputCodeDown() 
+        private async Task<EInputCode> AwaitInputCodeDown(IInput input) 
         {   
-            var input = EInputCode.None;
+            var checker = InputCodeCheckStrategy.GetChecker(input.InputType);
+            
+            var code = EInputCode.None;
 
-            for(; input == EInputCode.None;) 
+            for(; code == EInputCode.None;) 
             {
-                input = CheckKeyCode();
+                code = checker.Check(input.Index);
 
                 await Task.Yield();
             }
 
-            return input;
-        }
-
-        private EInputCode CheckKeyCode() 
-        {
-            var list = Enum
-                .GetValues(typeof(EInputCode))
-                .OfType<KeyCode>()
-                .ToArray();
-
-            return (EInputCode)list.FirstOrDefault(key => Input.GetKeyDown((KeyCode)key));
-        }
-
-        private EInputCode CheckXDonetInput() 
-        {
-            return EInputCode.None;
+            return code;
         }
 
         #endregion

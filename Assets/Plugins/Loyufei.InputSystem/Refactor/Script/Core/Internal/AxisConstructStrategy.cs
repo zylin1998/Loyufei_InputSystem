@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Loyufei.InputSystem
 {
-    internal static class AxisConstructorFactory
+    internal static class AxisConstructStrategy
     {
         internal static Dictionary<EInputType, IAxisConstructor> Constructors { get; } = new()
         {
@@ -14,16 +14,16 @@ namespace Loyufei.InputSystem
             { EInputType.GameController, new GameControllerAxisConstructor() },
         };
 
-        internal static IAxisConstructor Create(EInputType inputType) 
+        internal static IAxisConstructor GetConstructor(EInputType inputType)
         {
-            if (inputType == EInputType.Mobile) 
+            if (inputType == EInputType.Mobile)
             {
                 return default;
             }
 
-            var exitst = Constructors.TryGetValue(inputType, out var constructor);
+            var exist = Constructors.TryGetValue(inputType, out var constructor);
 
-            return exitst ? constructor : default;
+            return exist ? constructor : default;
         }
     }
 }

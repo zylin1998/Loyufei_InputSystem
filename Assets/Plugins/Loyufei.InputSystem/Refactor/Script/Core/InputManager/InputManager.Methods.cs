@@ -11,7 +11,7 @@ namespace Loyufei.InputSystem
         #region Public Static Mothods
 
         /// <summary>
-        /// 切換UI控制輸入頻道
+        /// 切換UI控制的輸入頻道
         /// </summary>
         /// <param name="index"></param>
         public static void SwitchUIControlInput(int index)
@@ -130,15 +130,30 @@ namespace Loyufei.InputSystem
             return Instance.FetchList(Index, inputType);
         }
 
+        #endregion
+
+        #region Extensions
+
         /// <summary>
         /// 更改指定輸入
         /// </summary>
         /// <param name="listIndex"></param>
         /// <param name="uuid"></param>
         /// <returns></returns>
-        public static async Task<bool> ChangeInput(this IInput self, int uuid) 
+        public static async Task<bool> ChangeInput(this IInput self, int uuid)
         {
             return await Instance.ChangeInput(self, uuid);
+        }
+
+        /// <summary>
+        /// 切換輸入頻道的綁定清單
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="listIndex"></param>
+        /// <returns></returns>
+        public static bool SwitchList(this IInput self, int listIndex) 
+        {
+            return Instance.SwitchList(self, listIndex);
         }
 
         #endregion

@@ -27,5 +27,14 @@ namespace Loyufei.InputSystem
         /// <param name="binding"></param>
         /// <returns></returns>
         public bool TryGet(int uuid, out BindingPair binding);
+
+        /// <summary>
+        /// 重新綁定輸入
+        /// </summary>
+        /// <param name="uuid"></param>
+        /// <param name="inputCode"></param>
+        /// <param name="sameEncounter"></param>
+        /// <returns></returns>
+        public bool Rebinding(int uuid, EInputCode inputCode, ESameEncounter sameEncounter);
     }
 }
