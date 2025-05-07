@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Loyufei.InputSystem
 {
-    public class InternalTaskDispatcher : MonoBehaviour
+    internal class InternalTaskDispatcher : MonoBehaviour
     {
         #region Const Field
 
@@ -49,19 +49,18 @@ namespace Loyufei.InputSystem
             }
         }
 
-        internal IInputList DefaultInputs
-        {
-           get; 
-            
-           set;
-        } = IInputList.Default;
-
         internal ESameEncounter SameEncounter 
         {
             get => _SameEncounter; 
             
             set => _SameEncounter = value; 
         }
+
+        internal Dictionary<EInputType, IInputList> DefaultInputLists { get; } = new()
+        {
+            { EInputType.KeyBoard      , IInputList.Default },
+            { EInputType.GameController, IInputList.Default },
+        };
 
         #endregion
 
@@ -114,6 +113,11 @@ namespace Loyufei.InputSystem
             _Axis = inputAxis.GetPairs().ToList();
         }
 
+        internal void SetList(IInputList inputList, EInputType inputType) 
+        {
+            DefaultInputLists[inputType] = inputList;
+        }
+
         /// <summary>
         /// 取得或新增輸入
         /// </summary>
@@ -128,7 +132,7 @@ namespace Loyufei.InputSystem
             {
                 var constructor = AxisConstructorFactory.Create(inputType);
 
-                input = new InputBase(constructor);
+                input = new InputBase(constructor, inputType, index);
 
                 if (input is IInputBinder binder) { binder.Binding(_Axis, inputBindings); }
 
@@ -153,7 +157,7 @@ namespace Loyufei.InputSystem
 
             list.SetIndex(index);
             list.SetInputType(inputType);
-            list.Init(DefaultInputs);
+            list.Init(DefaultInputLists[inputType]);
 
             list.transform.SetParent(transform);
 

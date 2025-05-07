@@ -20,7 +20,7 @@ namespace Loyufei.InputSystem
         /// <summary>
         /// InputManager 單例實作
         /// </summary>
-        public static InternalTaskDispatcher Instance 
+        internal static InternalTaskDispatcher Instance 
         {
             get 
             {
@@ -43,16 +43,6 @@ namespace Loyufei.InputSystem
             get => Instance.IndexCount;
 
             set => Instance.IndexCount = value;
-        }
-
-        /// <summary>
-        /// 初始輸入欄
-        /// </summary>
-        public static IInputList DefaultInputs 
-        { 
-            get => Instance.DefaultInputs; 
-            
-            set => Instance.DefaultInputs = value; 
         }
 
         /// <summary>

@@ -15,9 +15,11 @@ namespace Loyufei.InputSystem
 
         }
 
-        public InputBase(IAxisConstructor constructor)
+        public InputBase(IAxisConstructor constructor, EInputType inputType, int index)
         {
             AxisConstructor = constructor;
+            InputType       = inputType;
+            Index           = index;
         }
 
         #endregion
@@ -32,6 +34,10 @@ namespace Loyufei.InputSystem
 
         public AxisValue this[string axisName] 
             => AxisDictionary.TryGetValue(axisName, out var axis) ? axis.GetValue() : new AxisValue();
+
+        public int              Index           { get; set; }
+
+        public EInputType       InputType       { get; set; }
 
         public IAxisConstructor AxisConstructor { get; set; }
 

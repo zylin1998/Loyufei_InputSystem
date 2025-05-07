@@ -8,10 +8,12 @@ namespace Loyufei.InputSystem
     {
         [SerializeField]
         private List<InputPair> _Pairs = new();
+        [SerializeField]
+        private EInputType _InputType = EInputType.KeyBoard;
 
         private void Awake()
         {
-            InputManager.DefaultInputs = this;
+            InputManager.SetDefault(this, _InputType);
         }
 
         public IEnumerable<InputPair> GetPairs()

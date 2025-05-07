@@ -25,9 +25,18 @@ namespace Loyufei.InputSystem
         /// 設定預設輸入軸資訊
         /// </summary>
         /// <param name="inputAxis"></param>
-        public static void SetDefaultAxis(IInputAxis inputAxis) 
+        public static void SetDefault(IInputAxis inputAxis) 
         {
             Instance.SetAxis(inputAxis);
+        }
+
+        /// <summary>
+        /// 設定預設輸入清單資訊
+        /// </summary>
+        /// <param name="inputList"></param>
+        public static void SetDefault(IInputList inputList, EInputType inputType) 
+        {
+            Instance.SetList(inputList, inputType);
         }
 
         /// <summary>

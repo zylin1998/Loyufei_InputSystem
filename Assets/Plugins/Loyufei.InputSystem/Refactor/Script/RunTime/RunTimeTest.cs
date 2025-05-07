@@ -11,7 +11,11 @@ namespace Loyufei.InputSystem.Test
 
         private void Start()
         {
-            Input = InputManager.FetchInput(1);
+            Input = InputManager.FetchInput(1, EInputType.KeyBoard);
+
+            Debug.Log(InputManager.Monitor.ActiveInputs());
+            Debug.Log(InputManager.Monitor.ActiveInputs(EInputType.KeyBoard));
+            Debug.Log(string.Join(" ", InputManager.Monitor.ActiveInputIndex(EInputType.KeyBoard)));
         }
 
         private void Update()

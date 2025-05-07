@@ -11,7 +11,7 @@ namespace Loyufei.InputSystem
 
         private void Awake() 
         {
-            InputManager.SetDefaultAxis(this);
+            InputManager.SetDefault(this);
         }
 
         public IEnumerable<AxisPair> GetPairs()
