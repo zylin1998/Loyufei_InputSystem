@@ -182,12 +182,18 @@ namespace Loyufei.InputSystem
         /// <param name="listIndex"></param>
         /// <param name="uuid"></param>
         /// <returns></returns>
-        internal async Task<bool> ChangeInput(int listIndex, int uuid) 
+        internal async Task<bool> ChangeInput(IInput input, int uuid) 
         {
-            var input = await AwaitInputCodeDown();
-            var list  = FetchList(listIndex, EInputType.KeyBoard);
+            if (input is IInputBinder binder) 
+            {
+                var code = await AwaitInputCodeDown();
 
-            return list.ChangeInput(uuid, input, SameEncounter);
+                var list = binder.Bindings as InputList;
+                
+                return list.ChangeInput(uuid, code, SameEncounter);
+            }
+
+            return false;
         }
 
         #endregion
@@ -224,22 +230,32 @@ namespace Loyufei.InputSystem
         /// </summary>
         /// <returns></returns>
         private async Task<EInputCode> AwaitInputCodeDown() 
+        {   
+            var input = EInputCode.None;
+
+            for(; input == EInputCode.None;) 
+            {
+                input = CheckKeyCode();
+
+                await Task.Yield();
+            }
+
+            return input;
+        }
+
+        private EInputCode CheckKeyCode() 
         {
             var list = Enum
                 .GetValues(typeof(EInputCode))
                 .OfType<KeyCode>()
                 .ToArray();
 
-            var input = EInputCode.None;
+            return (EInputCode)list.FirstOrDefault(key => Input.GetKeyDown((KeyCode)key));
+        }
 
-            for(; input == EInputCode.None;) 
-            {
-                input = (EInputCode)list.FirstOrDefault(key => Input.GetKeyDown(key));
-
-                await Task.Yield();
-            }
-
-            return input;
+        private EInputCode CheckXDonetInput() 
+        {
+            return EInputCode.None;
         }
 
         #endregion

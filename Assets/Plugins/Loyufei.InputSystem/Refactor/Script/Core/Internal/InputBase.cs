@@ -41,13 +41,17 @@ namespace Loyufei.InputSystem
 
         public IAxisConstructor AxisConstructor { get; set; }
 
+        public IInputBindings   Bindings        { get; private set; }
+
         #endregion
 
         public void Binding(IEnumerable<AxisPair> axis, IInputBindings bindings)
         {
+            Bindings = bindings;
+
             foreach (var pair in axis) 
             {
-                AxisDictionary.Add(pair.AxisName, AxisConstructor.Construct(pair, bindings));
+                AxisDictionary.Add(pair.AxisName, AxisConstructor.Construct(pair, Bindings));
             }
         }
     }

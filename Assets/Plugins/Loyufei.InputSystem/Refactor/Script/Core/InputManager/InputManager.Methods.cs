@@ -136,9 +136,9 @@ namespace Loyufei.InputSystem
         /// <param name="listIndex"></param>
         /// <param name="uuid"></param>
         /// <returns></returns>
-        public static async Task<bool> ChangeInput(int listIndex, int uuid) 
+        public static async Task<bool> ChangeInput(this IInput self, int uuid) 
         {
-            return await Instance.ChangeInput(listIndex, uuid);
+            return await Instance.ChangeInput(self, uuid);
         }
 
         #endregion

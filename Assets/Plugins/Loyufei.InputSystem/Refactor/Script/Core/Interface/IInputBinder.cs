@@ -8,6 +8,8 @@ namespace Loyufei.InputSystem
 {
     public interface IInputBinder
     {
+        public IInputBindings Bindings { get; }
+
         /// <summary>
         /// 將輸入軸及榜定資訊結合綁定
         /// </summary>
