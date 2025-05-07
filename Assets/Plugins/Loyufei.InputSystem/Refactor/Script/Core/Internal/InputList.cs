@@ -22,7 +22,7 @@ namespace Loyufei.InputSystem
         #region Properties
 
         /// <summary>
-        /// 標示輸入的索引
+        /// 輸入清單索引
         /// </summary>
         public int        Index     => _Index;
 
@@ -65,36 +65,6 @@ namespace Loyufei.InputSystem
         public void SetInputType(EInputType type) 
         {
             _InputType = type;
-        }
-
-        /// <summary>
-        /// 新增Binding
-        /// </summary>
-        /// <param name="pair"></param>
-        /// <returns></returns>
-        public bool Add(InputPair pair)
-        {
-            var exist = _Bindings.Exists(b => b.UUID == pair.UUID);
-
-            if (exist) { return true; }
-
-            _Bindings.Add(new(pair));
-
-            return true;
-        }
-
-        /// <summary>
-        /// 移除與輸入UUID相符的輸入
-        /// </summary>
-        /// <param name="uuid"></param>
-        /// <returns></returns>
-        public bool Remove(int uuid)
-        {
-            var exist = _Bindings.Exists(b => b.UUID == uuid);
-
-            if (!exist) { return false; }
-
-            return _Bindings.Remove(_Bindings.Find(b => b.UUID == uuid));
         }
 
         /// <summary>

@@ -15,6 +15,8 @@ namespace Loyufei.InputSystem
         public const int minIndex = 1;
         public const int maxIndex = 4;
 
+        private const int inputDivide = 600;
+
         #endregion
 
         [SerializeField, Range(minIndex, maxIndex)]
@@ -94,8 +96,6 @@ namespace Loyufei.InputSystem
             return true;
         }
 
-        //internal IInput
-
         /// <summary>
         /// 設置UI控制輸入需要的輸入索引
         /// </summary>
@@ -167,9 +167,9 @@ namespace Loyufei.InputSystem
         /// </summary>
         /// <param name="size"></param>
         /// <returns></returns>
-        internal IEnumerable<IInputList> Resize(int size, EInputType inputType) 
+        internal IEnumerable<IInputList> Resize(int size) 
         {
-            return (_InputLists = SizeCheck(size, inputType).ToList());
+            return (_InputLists = SizeCheck(size).ToList());
         }
         
         /// <summary>
@@ -195,17 +195,12 @@ namespace Loyufei.InputSystem
         /// </summary>
         /// <param name="size"></param>
         /// <returns></returns>
-        internal IEnumerable<InputList> SizeCheck(int size, EInputType inputType)
+        internal IEnumerable<InputList> SizeCheck(int size)
         {
             var index = 0;
 
             foreach (var input in _InputLists) 
             {
-                if (input.InputType != inputType) 
-                {
-                    continue; 
-                }
-
                 if (input.Index <= size) 
                 {
                     yield return input;
@@ -213,12 +208,10 @@ namespace Loyufei.InputSystem
                     index++;
                 }
 
-                else { Destroy(input.gameObject); }
-            }
-
-            for (var i = index; i <= size; i++) 
-            {
-                yield return FetchList(i, inputType);
+                else 
+                {
+                    Destroy(input.gameObject); 
+                }
             }
         }
 

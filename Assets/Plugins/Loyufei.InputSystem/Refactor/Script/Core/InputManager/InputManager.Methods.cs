@@ -35,9 +35,9 @@ namespace Loyufei.InputSystem
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static IInput FetchInput(int index) 
+        public static IInput FetchInput(int index, EInputType inputType = EInputType.KeyBoard) 
         {
-            return FetchInput(index, index);
+            return FetchInput(index, index, inputType);
         }
 
         /// <summary>
@@ -45,15 +45,15 @@ namespace Loyufei.InputSystem
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static IInput FetchInput(int inputIndex, int listIndex)
+        public static IInput FetchInput(int inputIndex, int listIndex, EInputType inputType = EInputType.KeyBoard)
         {
             if (!Instance.IsIndexValid(inputIndex))
             {
                 return IInput.Default;
             }
 
-            var list  = Instance.FetchList(listIndex, EInputType.KeyBoard);
-            var input = Instance.FetchInput(inputIndex, list, EInputType.KeyBoard);
+            var list  = Instance.FetchList(listIndex, inputType);
+            var input = Instance.FetchInput(inputIndex, list, inputType);
 
             if (Instance.UIControl.CurrentIndex == 0)
             {
@@ -69,9 +69,9 @@ namespace Loyufei.InputSystem
         /// <param name="index"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static bool TryFetchInput(int index, out IInput input) 
+        public static bool TryFetchInput(int index, EInputType inputType, out IInput input) 
         {
-            return TryFetchInput(index, index, out input);
+            return TryFetchInput(index, index, inputType, out input);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Loyufei.InputSystem
         /// <param name="index"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static bool TryFetchInput(int inputIndex, int listIndex, out IInput input)
+        public static bool TryFetchInput(int inputIndex, int listIndex, EInputType inputType, out IInput input)
         {
             if (!Instance.IsIndexValid(inputIndex))
             {
@@ -89,9 +89,9 @@ namespace Loyufei.InputSystem
                 return false;
             }
 
-            var list = Instance.FetchList(listIndex, EInputType.KeyBoard);
+            var list = Instance.FetchList(listIndex, inputType);
 
-            input = Instance.FetchInput(inputIndex, list, EInputType.KeyBoard);
+            input = Instance.FetchInput(inputIndex, list, inputType);
 
             if (Instance.UIControl.CurrentIndex == 0)
             {
@@ -108,7 +108,7 @@ namespace Loyufei.InputSystem
         /// <returns></returns>
         public static IEnumerable<IInputList> Resize(int count) 
         {
-            return Instance.Resize(count, EInputType.KeyBoard);
+            return Instance.Resize(count);
         }
 
         /// <summary>
@@ -116,9 +116,9 @@ namespace Loyufei.InputSystem
         /// </summary>
         /// <param name="Index"></param>
         /// <returns></returns>
-        public static IInputList FetchList(int Index) 
+        public static IInputList FetchList(int Index, EInputType inputType = EInputType.KeyBoard) 
         {
-            return Instance.FetchList(Index, EInputType.KeyBoard);
+            return Instance.FetchList(Index, inputType);
         }
 
         /// <summary>

@@ -16,7 +16,7 @@ namespace Loyufei.InputSystem.Test
 
         private void Update()
         {
-            //Debug.Log(Input.GetKey("Event"));
+            Debug.Log(Input.GetKey("Event"));
             //Debug.Log(new Vector2(Input.GetAxis("Vertical"), Input.GetAxis("Horizontal")));
             Debug.Log(new Vector2(Input.GetAxisRaw("Vertical"), Input.GetAxisRaw("Horizontal")));
         }

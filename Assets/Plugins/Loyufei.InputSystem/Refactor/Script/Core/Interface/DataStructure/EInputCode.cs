@@ -164,6 +164,31 @@ namespace Loyufei.InputSystem
 
         #region XInputDonet GameController Input
 
+        JoystickX = 600,
+        JoystickA = 601,
+        JoystickB = 602,
+        JoystickY = 603,
+        LB        = 604,
+        RB        = 605,
+        LT        = 606,
+        RT        = 607,
+        Back      = 608,
+        Start     = 609,
+        LS_B      = 610,
+        RS_B      = 611,
+        LSUp      = 612,
+        LSDown    = 613,
+        LSLeft    = 614,
+        LSRight   = 615,
+        RSUp      = 616,
+        RSDown    = 617,
+        RSLeft    = 618,
+        RSRight   = 619,
+        DPADUp    = 620,
+        DPADDown  = 621,
+        DPADLeft  = 622,
+        DPADRight = 623,
+
         #endregion
     }
 }

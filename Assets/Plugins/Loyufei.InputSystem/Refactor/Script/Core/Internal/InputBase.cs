@@ -33,7 +33,7 @@ namespace Loyufei.InputSystem
         public AxisValue this[string axisName] 
             => AxisDictionary.TryGetValue(axisName, out var axis) ? axis.GetValue() : new AxisValue();
 
-        public IAxisConstructor AxisConstructor { get; set; } = new KeyCodeAxisConstructor();
+        public IAxisConstructor AxisConstructor { get; set; }
 
         #endregion
 
