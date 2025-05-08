@@ -14,7 +14,7 @@ namespace Loyufei.InputSystem
         private float _ReleasedTime = 0f;
         private float _DeltaTime = 0f;
 
-        public AxisPair Pair => _Pair;
+        public AxisPair    Pair     => _Pair;
         public BindingPair Positive => _Positive;
         public BindingPair Negative => _Negative;
 
@@ -41,12 +41,9 @@ namespace Loyufei.InputSystem
         {
             get
             {
-                var positive = Positive.InputCode;
-                var negative = Negative.InputCode;
+                if (GetValue(Positive.InputCode)) { return 1; }
 
-                if (GetValue(positive)) { return 1; }
-
-                if (GetValue(negative)) { return -1; }
+                if (GetValue(Negative.InputCode)) { return -1; }
 
                 return 0;
             }
@@ -100,6 +97,7 @@ namespace Loyufei.InputSystem
                 return false;
             }
         }
+
         private bool GetValue(EInputCode inputCode)
         {
             if((int)inputCode < 600)

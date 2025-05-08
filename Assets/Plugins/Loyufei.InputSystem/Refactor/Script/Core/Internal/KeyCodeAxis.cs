@@ -29,7 +29,7 @@ namespace Loyufei.InputSystem
 
         private float _PressTime;
 
-        public float AxisFloat
+        public float Axis
         {
             get 
             {
@@ -64,6 +64,6 @@ namespace Loyufei.InputSystem
         public bool Key     => Input.GetKey    ((KeyCode)Positive.InputCode);
         public bool KeyUp   => Input.GetKeyUp  ((KeyCode)Positive.InputCode);
 
-        public AxisValue GetValue() => new(AxisFloat, AxisRaw, KeyDown, Key, KeyUp); 
+        public AxisValue GetValue() => new(Axis, AxisRaw, KeyDown, Key, KeyUp); 
     }
 }

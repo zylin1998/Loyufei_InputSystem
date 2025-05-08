@@ -15,12 +15,10 @@ namespace Loyufei.InputSystem
         public const int minIndex = 1;
         public const int maxIndex = 4;
 
-        private const int inputDivide = 600;
-
         #endregion
 
         [SerializeField, Range(minIndex, maxIndex)]
-        private int             _IndexCount = 1;
+        private int             _IndexCount = maxIndex;
         [SerializeField]
         private ESameEncounter  _SameEncounter = ESameEncounter.None;
         [SerializeField]
@@ -113,6 +111,11 @@ namespace Loyufei.InputSystem
             _Axis = inputAxis.GetPairs().ToList();
         }
 
+        /// <summary>
+        /// 設置初始輸入清單
+        /// </summary>
+        /// <param name="inputList"></param>
+        /// <param name="inputType"></param>
         internal void SetList(IInputList inputList, EInputType inputType) 
         {
             DefaultInputLists[inputType] = inputList;
