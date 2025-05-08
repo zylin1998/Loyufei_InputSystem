@@ -51,12 +51,12 @@ namespace Loyufei.InputSystem
         {
             get 
             {
-                if (Input.GetKeyDown((KeyCode)Positive.InputCode) && _AxisRaw ==  0f) { return (_AxisRaw =  1f); }
-                if (Input.GetKeyDown((KeyCode)Negative.InputCode) && _AxisRaw ==  0f) { return (_AxisRaw = -1f); }
-                if (Input.GetKeyUp  ((KeyCode)Positive.InputCode) && _AxisRaw >   0f) { return (_AxisRaw =  0f); }
-                if (Input.GetKeyUp  ((KeyCode)Negative.InputCode) && _AxisRaw <   0f) { return (_AxisRaw =  0f); }
+                if ( Input.GetKey((KeyCode)Positive.InputCode) && _AxisRaw ==  0f) { return (_AxisRaw =  1f); }
+                if ( Input.GetKey((KeyCode)Negative.InputCode) && _AxisRaw ==  0f) { return (_AxisRaw = -1f); }
+                if (!Input.GetKey((KeyCode)Positive.InputCode) && _AxisRaw >   0f) { return (_AxisRaw =  0f); }
+                if (!Input.GetKey((KeyCode)Negative.InputCode) && _AxisRaw <   0f) { return (_AxisRaw =  0f); }
 
-                return _AxisRaw;
+                return _Pair.Revert ? _AxisRaw * -1 : _AxisRaw;
             }
         }
 

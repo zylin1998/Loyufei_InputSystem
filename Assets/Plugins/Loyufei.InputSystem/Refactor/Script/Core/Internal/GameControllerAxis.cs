@@ -41,9 +41,9 @@ namespace Loyufei.InputSystem
         {
             get
             {
-                if (GetValue(Positive.InputCode)) { return 1; }
+                if (GetValue(positive)) { return _Pair.Revert ? -1 :  1; }
 
-                if (GetValue(Negative.InputCode)) { return -1; }
+				if (GetValue(negative)) { return _Pair.Revert ?  1 : -1; }
 
                 return 0;
             }
