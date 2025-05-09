@@ -130,6 +130,15 @@ namespace Loyufei.InputSystem
             return Instance.FetchList(Index, inputType);
         }
 
+        /// <summary>
+        /// 取得所有輸入清單資訊
+        /// </summary>
+        /// <returns></returns>
+        public static InputPackage FetchLists() 
+        {
+            return Instance.GetAllList();
+        }
+
         #endregion
 
         #region Extensions

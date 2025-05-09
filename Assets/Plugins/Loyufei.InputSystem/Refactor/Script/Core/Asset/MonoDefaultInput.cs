@@ -11,19 +11,21 @@ namespace Loyufei.InputSystem
         [SerializeField]
         private EInputType _InputType = EInputType.KeyBoard;
 
+        public EInputType InputType => _InputType;
+
         private void Awake()
         {
             InputManager.SetDefault(this, _InputType);
         }
 
-        public IEnumerable<InputPair> GetPairs()
-        {
-            return _Pairs;
-        }
-
         public void Init(IInputList inputList)
         {
             _Pairs.AddRange(inputList.GetPairs());
+        }
+
+        public IEnumerable<InputPair> GetPairs()
+        {
+            return _Pairs;
         }
     }
 }

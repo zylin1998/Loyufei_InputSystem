@@ -133,6 +133,8 @@ namespace Loyufei.InputSystem
 
         public void Init(IInputList inputList)
         {
+            _InputType = inputList.InputType;
+
             _Bindings = inputList
                 .GetPairs()
                 .Select(p => new BindingPair(p)) 

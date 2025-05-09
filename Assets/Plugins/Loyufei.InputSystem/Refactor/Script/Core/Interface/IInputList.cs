@@ -9,6 +9,12 @@ namespace Loyufei.InputSystem
     public interface IInputList
     {
         /// <summary>
+        /// 輸入清單服務的輸入種類
+        /// </summary>
+        public EInputType InputType { get; }
+
+
+        /// <summary>
         /// 以外部清單初始化清單
         /// </summary>
         /// <param name="inputList"></param>
@@ -28,6 +34,8 @@ namespace Loyufei.InputSystem
         private class DefaultList : IInputList 
         {
             private List<InputPair> _Pairs = new();
+
+            public EInputType InputType => default;
 
             public void Init(IInputList inputList) 
             {

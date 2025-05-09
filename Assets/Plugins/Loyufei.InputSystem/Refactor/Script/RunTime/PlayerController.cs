@@ -17,6 +17,8 @@ namespace Loyufei.InputSystem.Test
 
         private void Start()
         {
+            var package = InputManager.FetchLists();
+
             Input = InputManager.FetchInput(1);
         }
 

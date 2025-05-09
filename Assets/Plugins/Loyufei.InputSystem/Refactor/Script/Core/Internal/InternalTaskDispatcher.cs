@@ -152,7 +152,7 @@ namespace Loyufei.InputSystem
         /// <returns></returns>
         internal InputList FetchList(int index, EInputType inputType) 
         {
-            var list = _InputLists.Find(l => l.Index == index);
+            var list = _InputLists.Find(l => l.Index == index && l.InputType == inputType);
 
             if (list) { return list; }
 
@@ -223,12 +223,21 @@ namespace Loyufei.InputSystem
         /// 取得當前所有輸入清單的資訊
         /// </summary>
         /// <returns></returns>
-        internal InputPair[][] GetAllList() 
+        internal InputPackage GetAllList() 
         {
-            return _InputLists
-                .OrderBy(key => key.InputType)
-                .Select(list => list.GetPairs().ToArray())
-                .ToArray();
+            var list = new List<IInputList>();
+
+            for (int i = minIndex; i <= maxIndex; i++) 
+            {
+                list.Add(FetchList(i, EInputType.KeyBoard));
+            }
+
+            for (int i = minIndex; i <= maxIndex; i++)
+            {
+                list.Add(FetchList(i, EInputType.GameController));
+            }
+
+            return new(list);
         }
 
         #endregion
