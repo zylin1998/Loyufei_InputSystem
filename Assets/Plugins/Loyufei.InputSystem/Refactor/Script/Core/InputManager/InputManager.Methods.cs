@@ -34,9 +34,9 @@ namespace Loyufei.InputSystem
         /// 設定預設輸入清單資訊
         /// </summary>
         /// <param name="inputList"></param>
-        public static void SetDefault(IInputList inputList, EInputType inputType) 
+        public static void SetDefault(IInputList inputList) 
         {
-            Instance.SetList(inputList, inputType);
+            Instance.SetList(inputList);
         }
 
         /// <summary>

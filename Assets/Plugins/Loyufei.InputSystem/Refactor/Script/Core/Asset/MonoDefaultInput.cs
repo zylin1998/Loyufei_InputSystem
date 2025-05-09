@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +15,7 @@ namespace Loyufei.InputSystem
 
         private void Awake()
         {
-            InputManager.SetDefault(this, _InputType);
+            InputManager.SetDefault(this);
         }
 
         public void Init(IInputList inputList)

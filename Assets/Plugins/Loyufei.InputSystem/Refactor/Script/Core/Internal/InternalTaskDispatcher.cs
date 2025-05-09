@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -81,7 +81,7 @@ namespace Loyufei.InputSystem
         #region Internal Method
 
         /// <summary>
-        /// §PÂ_¿é¤J¯Á¤Ş¬O§_¦³®Ä
+        /// åˆ¤æ–·è¼¸å…¥ç´¢å¼•æ˜¯å¦æœ‰æ•ˆ
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
@@ -94,16 +94,16 @@ namespace Loyufei.InputSystem
         }
 
         /// <summary>
-        /// ³]¸mUI±±¨î¿é¤J»İ­nªº¿é¤J¯Á¤Ş
+        /// è¨­ç½®UIæ§åˆ¶è¼¸å…¥éœ€è¦çš„è¼¸å…¥ç´¢å¼•
         /// </summary>
         /// <param name="index"></param>
         internal void SetUIControl(int index) 
         {
-            _UIControl.SetIndex(index, Inputs[index]);
+            _UIControl.SetIndex(Inputs[index]);
         }
 
         /// <summary>
-        /// ³]¸m¿é¤J¶b¸ê°T
+        /// è¨­ç½®è¼¸å…¥è»¸è³‡è¨Š
         /// </summary>
         /// <param name="inputAxis"></param>
         internal void SetAxis(IInputAxis inputAxis) 
@@ -112,17 +112,17 @@ namespace Loyufei.InputSystem
         }
 
         /// <summary>
-        /// ³]¸mªì©l¿é¤J²M³æ
+        /// è¨­ç½®åˆå§‹è¼¸å…¥æ¸…å–®
         /// </summary>
         /// <param name="inputList"></param>
         /// <param name="inputType"></param>
-        internal void SetList(IInputList inputList, EInputType inputType) 
+        internal void SetList(IInputList inputList) 
         {
-            DefaultInputLists[inputType] = inputList;
+            DefaultInputLists[inputList.InputType] = inputList;
         }
 
         /// <summary>
-        /// ¨ú±o©Î·s¼W¿é¤J
+        /// å–å¾—æˆ–æ–°å¢è¼¸å…¥
         /// </summary>
         /// <param name="index"></param>
         /// <param name="inputBindings"></param>
@@ -146,7 +146,7 @@ namespace Loyufei.InputSystem
         }
 
         /// <summary>
-        /// ¨ú±o¿é¤J²M³æ
+        /// å–å¾—è¼¸å…¥æ¸…å–®
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
@@ -170,7 +170,7 @@ namespace Loyufei.InputSystem
         }
 
         /// <summary>
-        /// ¤Á´«¿é¤JÀW¹Dªº¸j©w²M³æ
+        /// åˆ‡æ›è¼¸å…¥é »é“çš„ç¶å®šæ¸…å–®
         /// </summary>
         /// <param name="input"></param>
         /// <param name="listIndex"></param>
@@ -190,7 +190,7 @@ namespace Loyufei.InputSystem
         }
 
         /// <summary>
-        /// ­«¸m²M³æªº¼Æ¶q
+        /// é‡ç½®æ¸…å–®çš„æ•¸é‡
         /// </summary>
         /// <param name="size"></param>
         /// <returns></returns>
@@ -200,7 +200,7 @@ namespace Loyufei.InputSystem
         }
         
         /// <summary>
-        /// §ó§ï«ü©w¿é¤J
+        /// æ›´æ”¹æŒ‡å®šè¼¸å…¥
         /// </summary>
         /// <param name="listIndex"></param>
         /// <param name="uuid"></param>
@@ -220,7 +220,7 @@ namespace Loyufei.InputSystem
         }
 
         /// <summary>
-        /// ¨ú±o·í«e©Ò¦³¿é¤J²M³æªº¸ê°T
+        /// å–å¾—ç•¶å‰æ‰€æœ‰è¼¸å…¥æ¸…å–®çš„è³‡è¨Š
         /// </summary>
         /// <returns></returns>
         internal InputPackage GetAllList() 
@@ -245,7 +245,7 @@ namespace Loyufei.InputSystem
         #region Private Method
 
         /// <summary>
-        /// ¾ã²z²M³æ¼Æ¶q
+        /// æ•´ç†æ¸…å–®æ•¸é‡
         /// </summary>
         /// <param name="size"></param>
         /// <returns></returns>
@@ -270,7 +270,7 @@ namespace Loyufei.InputSystem
         }
 
         /// <summary>
-        /// ²§¨Bµ¥«İ«öÁä³Q«ö¤U
+        /// ç•°æ­¥ç­‰å¾…æŒ‰éµè¢«æŒ‰ä¸‹
         /// </summary>
         /// <returns></returns>
         private async Task<EInputCode> AwaitInputCodeDown(IInput input) 

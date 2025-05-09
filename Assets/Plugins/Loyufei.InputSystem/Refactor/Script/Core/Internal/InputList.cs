@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,12 +22,12 @@ namespace Loyufei.InputSystem
         #region Properties
 
         /// <summary>
-        /// ¿é¤J²M³æ¯Á¤Ş
+        /// è¼¸å…¥æ¸…å–®ç´¢å¼•
         /// </summary>
         public int        Index     => _Index;
 
         /// <summary>
-        /// Åã¥Ü¸Ó²M³æªA°Èªº¿é¤J¥­¥x¡C
+        /// é¡¯ç¤ºè©²æ¸…å–®æœå‹™çš„è¼¸å…¥å¹³å°ã€‚
         /// </summary>
         public EInputType InputType => _InputType;
 
@@ -50,7 +50,7 @@ namespace Loyufei.InputSystem
         #region Public Methods
 
         /// <summary>
-        /// ³]¸m¿é¤Jªº Index ¶¶§Ç
+        /// è¨­ç½®è¼¸å…¥çš„ Index é †åº
         /// </summary>
         /// <param name="index"></param>
         public void SetIndex(int index) 
@@ -59,7 +59,7 @@ namespace Loyufei.InputSystem
         }
 
         /// <summary>
-        /// §ó§ï¿é¤J¥­¥x¡C
+        /// æ›´æ”¹è¼¸å…¥å¹³å°ã€‚
         /// </summary>
         /// <param name="type"></param>
         public void SetInputType(EInputType type) 
@@ -72,12 +72,12 @@ namespace Loyufei.InputSystem
         #region Private Methods
 
         /// <summary>
-        /// ¿é¤JÀË¬dµ¦²¤
+        /// è¼¸å…¥æª¢æŸ¥ç­–ç•¥
         /// </summary>
         private Dictionary<ESameEncounter, Func<BindingPair, EInputCode, bool>> Strategy;
 
         /// <summary>
-        /// ­Y¿é¤J­«½Æ«h¦^¶Ç¥¢±Ñ
+        /// è‹¥è¼¸å…¥é‡è¤‡å‰‡å›å‚³å¤±æ•—
         /// </summary>
         /// <param name="uuid"></param>
         /// <param name="keyCode"></param>
@@ -94,7 +94,7 @@ namespace Loyufei.InputSystem
         }
 
         /// <summary>
-        /// ­Y¿é¤J­«½Æ«h§R°£­«½Æ
+        /// è‹¥è¼¸å…¥é‡è¤‡å‰‡åˆªé™¤é‡è¤‡
         /// </summary>
         /// <param name="uuid"></param>
         /// <param name="keyCode"></param>
@@ -111,7 +111,7 @@ namespace Loyufei.InputSystem
         }
 
         /// <summary>
-        /// ­Y¿é¤J­«½Æ«h¥æ´«
+        /// è‹¥è¼¸å…¥é‡è¤‡å‰‡äº¤æ›
         /// </summary>
         /// <param name="uuid"></param>
         /// <param name="keyCode"></param>
@@ -168,7 +168,7 @@ namespace Loyufei.InputSystem
         }
 
         /// <summary>
-        /// §ó´«¿é¤J¨ÃÀË¬d­«½Æ
+        /// æ›´æ›è¼¸å…¥ä¸¦æª¢æŸ¥é‡è¤‡
         /// </summary>
         /// <param name="uuid"></param>
         /// <param name="keyCode"></param>
