@@ -7,9 +7,12 @@ namespace Loyufei.InputSystem
     public class UISettingComponent : MonoBehaviour
     {
         [SerializeField]
+        private GameObject         _Main;
+        [SerializeField]
         private Transform          _Mask;
         [SerializeField]
         private List<InputChanger> _Changers;
+        [SerializeField]
 
         public IInput Input { get; private set; }
 
@@ -17,6 +20,8 @@ namespace Loyufei.InputSystem
 
         private void Awake()
         {
+            gameObject.SetActive(false);
+
             InputManager.SameEncounter = ESameEncounter.Exchange;
         }
 
@@ -41,6 +46,16 @@ namespace Loyufei.InputSystem
             foreach (var pair in Input.FetchList().GetPairs()) 
             {
                 this[pair.UUID]?.SetContext(pair.InputCode);
+            }
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown("Cancel"))
+            {
+                gameObject.SetActive(false);
+
+                _Main.SetActive(true);
             }
         }
 
