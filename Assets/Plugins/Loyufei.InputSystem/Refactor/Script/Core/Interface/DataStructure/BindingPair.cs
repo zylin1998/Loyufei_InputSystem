@@ -13,7 +13,7 @@ namespace Loyufei.InputSystem
         #region Fields
 
         [SerializeField]
-        private int        _UUID;
+        private int _UUID;
         [SerializeField]
         private EInputCode _InputCode;
 
@@ -39,7 +39,7 @@ namespace Loyufei.InputSystem
             Reset(uuid, keyCode);
         }
 
-        public BindingPair(InputPair pair) 
+        public BindingPair(InputPair pair)
         {
             Reset(pair.UUID, pair.InputCode);
         }
@@ -48,9 +48,9 @@ namespace Loyufei.InputSystem
 
         #region Public Methods
 
-        public void Reset(int uuid, EInputCode inputCode) 
+        public void Reset(int uuid, EInputCode inputCode)
         {
-            _UUID      = uuid;
+            _UUID = uuid;
             _InputCode = inputCode;
         }
 
@@ -58,6 +58,12 @@ namespace Loyufei.InputSystem
         {
             _InputCode = inputCode;
         }
+
+        #endregion
+
+        #region Static Value
+
+        public static BindingPair Default { get; } = new(0, EInputCode.None);
 
         #endregion
     }

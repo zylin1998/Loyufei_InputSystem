@@ -33,20 +33,6 @@ namespace Loyufei.InputSystem
 
         #endregion
 
-        #region Constructor
-
-        internal InputList() : base()
-        {
-            Strategy = new()
-            {
-                { ESameEncounter.None    , None     },
-                { ESameEncounter.Delete  , Delete   },
-                { ESameEncounter.Exchange, Exchange },
-            };
-        }
-
-        #endregion
-
         #region Public Methods
 
         /// <summary>
@@ -69,76 +55,28 @@ namespace Loyufei.InputSystem
 
         #endregion
 
-        #region Private Methods
-
-        /// <summary>
-        /// 輸入檢查策略
-        /// </summary>
-        private Dictionary<ESameEncounter, Func<BindingPair, EInputCode, bool>> Strategy;
-
-        /// <summary>
-        /// 若輸入重複則回傳失敗
-        /// </summary>
-        /// <param name="uuid"></param>
-        /// <param name="keyCode"></param>
-        /// <returns></returns>
-        private bool None(BindingPair binding, EInputCode inputCode)
-        {
-            var same = _Bindings.Find(b => b.InputCode == inputCode);
-
-            if (same != null) { return false; }
-
-            binding.Reset(inputCode);
-
-            return true;
-        }
-
-        /// <summary>
-        /// 若輸入重複則刪除重複
-        /// </summary>
-        /// <param name="uuid"></param>
-        /// <param name="keyCode"></param>
-        /// <returns></returns>
-        private bool Delete(BindingPair binding, EInputCode inputCode) 
-        {
-            var same = _Bindings.Find(b => b.InputCode == inputCode);
-
-            if (same != null) { same.Reset(EInputCode.None); }
-
-            binding.Reset(inputCode);
-
-            return true;
-        }
-
-        /// <summary>
-        /// 若輸入重複則交換
-        /// </summary>
-        /// <param name="uuid"></param>
-        /// <param name="keyCode"></param>
-        /// <returns></returns>
-        private bool Exchange(BindingPair binding, EInputCode inputCode)
-        {
-            var same = _Bindings.Find(b => b.InputCode == inputCode);
-
-            if (same != null) { same.Reset(binding.InputCode); }
-
-            binding.Reset(inputCode);
-
-            return true;
-        }
-
-        #endregion
-
         #region IInputList
 
         public void Init(IInputList inputList)
         {
             _InputType = inputList.InputType;
 
-            _Bindings = inputList
-                .GetPairs()
-                .Select(p => new BindingPair(p)) 
-                .ToList();
+            foreach (var pair in inputList.GetPairs()) 
+            {
+                var binding = _Bindings.Find(b => b.UUID == pair.UUID);
+
+                if (binding == null)
+                {
+                    binding = new(pair);
+
+                    _Bindings.Add(binding);
+                }
+
+                else 
+                {
+                    binding.Reset(pair.InputCode);
+                }
+            }
         }
 
         public IEnumerable<InputPair> GetPairs()
@@ -160,6 +98,16 @@ namespace Loyufei.InputSystem
             }
         }
 
+        public BindingPair this[EInputCode inputCode]
+        {
+            get
+            {
+                TryGet(inputCode, out var bindings);
+
+                return bindings;
+            }
+        }
+
         public bool TryGet(int uuid, out BindingPair value)
         {
             value = _Bindings.SingleOrDefault(p => p.UUID == uuid) ?? new(0, EInputCode.None);
@@ -167,23 +115,23 @@ namespace Loyufei.InputSystem
             return value.UUID == uuid;
         }
 
-        /// <summary>
-        /// 更換輸入並檢查重複
-        /// </summary>
-        /// <param name="uuid"></param>
-        /// <param name="keyCode"></param>
-        /// <param name="onSame"></param>
-        /// <returns></returns>
-        public bool Rebinding(int uuid, EInputCode inputCode, ESameEncounter onSame)
+        public bool TryGet(EInputCode inputCode, out BindingPair value)
+        {
+            value = _Bindings.SingleOrDefault(p => p.InputCode == inputCode) ?? new(0, EInputCode.None);
+
+            return value.InputCode == inputCode;
+        }
+
+        public InputRebindResult Rebinding(int uuid, EInputCode inputCode, ESameEncounter onSame)
         {
             var exist = TryGet(uuid, out var binding);
 
             if (exist)
             {
-                return Strategy[onSame].Invoke(binding, inputCode);
+                return InputRebindStrategy.GetRebinder(onSame).Rebind(this, uuid, inputCode);
             }
 
-            return exist;
+            return new(false, Index, InputType, BindingPair.Default, BindingPair.Default);
         }
 
         #endregion

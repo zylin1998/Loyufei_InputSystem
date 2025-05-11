@@ -12,6 +12,7 @@ namespace Loyufei.InputSystem
     public enum ESameEncounter
     {
         None,
+        Ignore,
         Delete,
         Exchange,
     }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Loyufei.InputSystem
 {
@@ -27,6 +28,8 @@ namespace Loyufei.InputSystem
         private UIControlInput  _UIControl;
         [SerializeField]
         private List<InputList> _InputLists = new();
+
+        private CancellationTokenSource _TokenSource = new();
 
         #region Internal Properties
 
@@ -62,6 +65,15 @@ namespace Loyufei.InputSystem
 
         #endregion
 
+        #region Constructors
+
+        internal InternalTaskDispatcher() : base()
+        {
+            _TokenSource = new();
+        }
+
+        #endregion
+
         #region Unity Behaviour
 
         private void Awake()
@@ -74,6 +86,11 @@ namespace Loyufei.InputSystem
                 
                 inputModule.inputOverride = _UIControl;
             }
+        }
+
+        private void OnDestroy()
+        {
+            _TokenSource.Cancel();
         }
 
         #endregion
@@ -119,6 +136,21 @@ namespace Loyufei.InputSystem
         internal void SetList(IInputList inputList) 
         {
             DefaultInputLists[inputList.InputType] = inputList;
+        }
+
+        /// <summary>
+        /// 重製索引及服務平台相對應的輸入清單
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="inputType"></param>
+        /// <returns></returns>
+        internal IEnumerable<InputPair> ResetList(int index, EInputType type) 
+        {
+            var list = FetchList(index, type);
+
+            list.Init(DefaultInputLists[type]);
+
+            return list.GetPairs();
         }
 
         /// <summary>
@@ -205,7 +237,7 @@ namespace Loyufei.InputSystem
         /// <param name="listIndex"></param>
         /// <param name="uuid"></param>
         /// <returns></returns>
-        internal async Task<bool> ChangeInput(IInput input, int uuid) 
+        internal async Task<InputRebindResult> ChangeInput(IInput input, int uuid) 
         {
             if (input is IInputBinder binder) 
             {
@@ -216,7 +248,7 @@ namespace Loyufei.InputSystem
                 return list.Rebinding(uuid, code, SameEncounter);
             }
 
-            return false;
+            return new(false, 0, input.InputType, BindingPair.Default, BindingPair.Default);
         }
 
         /// <summary>
@@ -279,11 +311,16 @@ namespace Loyufei.InputSystem
             
             var code = EInputCode.None;
 
-            for(; code == EInputCode.None;) 
+            for (; input.AnyKey();) 
             {
-                code = checker.Check(input.Index);
-
                 await Task.Yield();
+            }
+
+            for (; code == EInputCode.None && !_TokenSource.Token.IsCancellationRequested;) 
+            {
+                await Task.Yield();
+                
+                code = checker.Check(input.Index);
             }
 
             return code;

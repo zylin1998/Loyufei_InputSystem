@@ -9,7 +9,7 @@ namespace Loyufei.InputSystem
     public interface IInputList
     {
         /// <summary>
-        /// 輸入清單服務的輸入種類
+        /// 顯示該清單服務的輸入平台。
         /// </summary>
         public EInputType InputType { get; }
 

@@ -139,17 +139,13 @@ namespace Loyufei.InputSystem
             return Instance.GetAllList();
         }
 
-        #endregion
-
-        #region Extensions
-
         /// <summary>
         /// 更改指定輸入
         /// </summary>
         /// <param name="listIndex"></param>
         /// <param name="uuid"></param>
         /// <returns></returns>
-        public static async Task<bool> ChangeInput(this IInput self, int uuid)
+        public static async Task<InputRebindResult> ChangeInput(IInput self, int uuid)
         {
             return await Instance.ChangeInput(self, uuid);
         }
@@ -160,9 +156,20 @@ namespace Loyufei.InputSystem
         /// <param name="self"></param>
         /// <param name="listIndex"></param>
         /// <returns></returns>
-        public static bool SwitchList(this IInput self, int listIndex) 
+        public static bool SwitchList(IInput self, int listIndex) 
         {
             return Instance.SwitchList(self, listIndex);
+        }
+
+        /// <summary>
+        /// 重製索引及服務平台相對應的輸入清單
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="inputType"></param>
+        /// <returns></returns>
+        public static IEnumerable<InputPair> ResetList(int index, EInputType inputType) 
+        {
+            return Instance.ResetList(index, inputType);
         }
 
         #endregion

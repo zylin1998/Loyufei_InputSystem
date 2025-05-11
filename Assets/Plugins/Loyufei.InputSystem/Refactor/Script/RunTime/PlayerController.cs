@@ -15,6 +15,11 @@ namespace Loyufei.InputSystem.Test
 
         public IInput Input { get; private set; }
 
+        private float _RotateSmooth;
+
+        private Vector3 _Direction;
+        private float   _Rotation;
+
         private void Start()
         {
             var package = InputManager.FetchLists();
@@ -24,13 +29,37 @@ namespace Loyufei.InputSystem.Test
 
         private void Update()
         {
-            var direct = new Vector3(Input.GetAxisRaw("Vertical"), 0f, Input.GetAxisRaw("Horizontal"));
+            _Direction = new Vector3(Input.GetAxisRaw("Vertical"), 0f, Input.GetAxisRaw("Horizontal"));
 
-            var rotation = Vector3.SignedAngle(direct, Vector3.right, Vector3.one);
+            _Rotation  = Vector3.SignedAngle(_Direction, Vector3.right, Vector3.one);
+        }
 
-            _Controller.Move(new Vector3(direct.x, 0f, -direct.z) * Time.deltaTime * _Speed);
+        private void FixedUpdate()
+        {
+            if (_Direction == Vector3.zero) { return; }
 
-            _Model.rotation = Quaternion.Euler(0f, rotation, 0f);
+            ChangeAngleY();
+
+            Move();
+        }
+
+        private Vector3 Move() 
+        {
+            var result = new Vector3(_Direction.x, 0f, -_Direction.z) * Time.fixedDeltaTime * _Speed;
+
+            _Controller.Move(result);
+
+            return result;
+        }
+
+        private float ChangeAngleY() 
+        {
+            var current = _Model.eulerAngles.y;
+            var result  = Mathf.SmoothDampAngle(current, _Rotation, ref _RotateSmooth, 0.1f);
+            
+            _Model.rotation = Quaternion.Euler(0f, result, 0f);
+
+            return result;
         }
     }
 }

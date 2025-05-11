@@ -11,12 +11,12 @@ namespace Loyufei.InputSystem
     {
         public EInputCode Check(int playerIndex) 
         {
-            var list = Enum
+            var array = Enum
                 .GetValues(typeof(EInputCode))
-                .OfType<KeyCode>()
+                .Cast<KeyCode>()
                 .ToArray();
-
-            return (EInputCode)list.FirstOrDefault(key => Input.GetKeyDown(key));
+            
+            return (EInputCode)array.FirstOrDefault(key => Input.GetKeyDown(key));
         }
     }
 }
