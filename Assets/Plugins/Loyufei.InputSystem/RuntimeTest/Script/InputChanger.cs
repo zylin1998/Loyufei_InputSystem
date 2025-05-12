@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+#if LOYUFEI_INPUTSYSTEM
+
 namespace Loyufei.InputSystem.RuntimeTest
 {
     public class InputChanger : MonoBehaviour
@@ -33,3 +35,5 @@ namespace Loyufei.InputSystem.RuntimeTest
         }
     }
 }
+
+#endif

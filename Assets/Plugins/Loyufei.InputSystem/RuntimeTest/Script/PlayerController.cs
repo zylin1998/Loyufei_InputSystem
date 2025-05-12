@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#if LOYUFEI_INPUTSYSTEM
+
 namespace Loyufei.InputSystem.RuntimeTest
 {
     public class PlayerController : MonoBehaviour
@@ -63,3 +65,5 @@ namespace Loyufei.InputSystem.RuntimeTest
         }
     }
 }
+
+#endif

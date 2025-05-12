@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if LOYUFEI_INPUTSYSTEM
+
 namespace Loyufei.InputSystem.RuntimeTest
 {
     public class UIMainComponent : MonoBehaviour
@@ -10,15 +12,15 @@ namespace Loyufei.InputSystem.RuntimeTest
         private GameObject _Setting;
 
         public IInput Input { get; private set; }
-        
+
         void Start()
         {
-            Input = InputManager.FetchInput(1, EInputType.KeyBoard);        
+            Input = InputManager.FetchInput(1, EInputType.KeyBoard);
         }
 
         void Update()
         {
-            if (Input.GetKeyDown("Cancel")) 
+            if (Input.GetKeyDown("Cancel"))
             {
                 gameObject.SetActive(false);
 
@@ -27,3 +29,5 @@ namespace Loyufei.InputSystem.RuntimeTest
         }
     }
 }
+
+#endif

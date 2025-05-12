@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if LOYUFEI_INPUTSYSTEM
+
 namespace Loyufei.InputSystem.RuntimeTest
 {
     public class UISettingComponent : MonoBehaviour
@@ -12,7 +14,6 @@ namespace Loyufei.InputSystem.RuntimeTest
         private Transform          _Mask;
         [SerializeField]
         private List<InputChanger> _Changers;
-        [SerializeField]
 
         public IInput Input { get; private set; }
 
@@ -83,3 +84,5 @@ namespace Loyufei.InputSystem.RuntimeTest
         }
     }
 }
+
+#endif
