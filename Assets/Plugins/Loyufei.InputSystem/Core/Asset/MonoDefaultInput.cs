@@ -9,7 +9,7 @@ namespace Loyufei.InputSystem
         [SerializeField]
         private List<InputPair> _Pairs = new();
         [SerializeField]
-        private EInputType _InputType = EInputType.KeyBoard;
+        private EInputType _InputType;
 
         public EInputType InputType => _InputType;
 
@@ -26,6 +26,27 @@ namespace Loyufei.InputSystem
         public IEnumerable<InputPair> GetPairs()
         {
             return _Pairs;
+        }
+
+        private void Reset()
+        {
+            if (_InputType == EInputType.KeyBoard)
+            {
+                _Pairs = new()
+                {
+                    new (1, EInputCode.Return),
+                    new (2, EInputCode.Escape),
+                };
+            }
+
+            if (_InputType == EInputType.GameController)
+            {
+                _Pairs = new()
+                {
+                    new (1, EInputCode.Start),
+                    new (2, EInputCode.Back),
+                };
+            }
         }
     }
 }
