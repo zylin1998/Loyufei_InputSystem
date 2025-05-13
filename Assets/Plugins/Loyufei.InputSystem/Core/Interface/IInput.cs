@@ -16,6 +16,20 @@ namespace Loyufei.InputSystem
         public AxisValue this[string axisName] { get; }
 
         /// <summary>
+        /// 以hashcode尋找對應輸入軸並取得該輸入軸的值
+        /// </summary>
+        /// <param name="hashcode"></param>
+        /// <returns></returns>
+        public AxisValue this[int hashcode] { get; }
+
+        /// <summary>
+        /// 以字串尋找對應輸入軸並取得該輸入軸的hashcode
+        /// </summary>
+        /// <param name="axisName"></param>
+        /// <returns></returns>
+        public int GetHashCode(string axisName);
+
+        /// <summary>
         /// 取得該輸入頻道對應的輸入種類
         /// </summary>
         public EInputType InputType { get; }
@@ -29,12 +43,18 @@ namespace Loyufei.InputSystem
 
         private class DefaultInput : IInput
         {
-
             public AxisValue this[string axisName] => new();
+
+            public AxisValue this[int hashcode] => new();
 
             public EInputType InputType => EInputType.KeyBoard;
 
             public int Index => int.MinValue;
+
+            public int GetHashCode(string axisName)
+            {
+                return 0;
+            }
         }
     }
 }

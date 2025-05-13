@@ -22,11 +22,15 @@ namespace Loyufei.InputSystem.RuntimeTest
         private Vector3 _Direction;
         private float   _Rotation;
 
+        private int _EventHashCode;
+
         private void Start()
         {
             var package = InputManager.FetchLists();
 
             Input = InputManager.FetchInput(1, EInputType.KeyBoard);
+
+            _EventHashCode = Input.GetHashCode("Event");
         }
 
         private void Update()
@@ -34,6 +38,8 @@ namespace Loyufei.InputSystem.RuntimeTest
             _Direction = new Vector3(Input.GetAxisRaw("Vertical"), 0f, Input.GetAxisRaw("Horizontal"));
 
             _Rotation  = Vector3.SignedAngle(_Direction, Vector3.right, Vector3.one);
+
+            Debug.Log(Input.GetKey(_EventHashCode));
         }
 
         private void FixedUpdate()

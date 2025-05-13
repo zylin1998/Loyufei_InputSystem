@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -7,6 +8,8 @@ namespace Loyufei.InputSystem
 {
     public static class IInputExtensions
     {
+        #region AxisName Search
+
         /// <summary>
         /// 取得輸入軸浮點數數值
         /// </summary>
@@ -61,6 +64,67 @@ namespace Loyufei.InputSystem
         {
             return self[axisName].KeyUp;
         }
+
+        #endregion
+
+        #region HashCode
+
+        /// <summary>
+        /// 取得輸入軸浮點數數值
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="hashCode"></param>
+        /// <returns></returns>
+        public static float GetAxis(this IInput self, int hashCode)
+        {
+            return self[hashCode].Axis;
+        }
+
+        /// <summary>
+        /// 取得輸入軸浮點數整數數值
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="hashCode"></param>
+        /// <returns></returns>
+        public static float GetAxisRaw(this IInput self, int hashCode)
+        {
+            return self[hashCode].AxisRaw;
+        }
+
+        /// <summary>
+        /// 取得輸入軸是否按下
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="hashCode"></param>
+        /// <returns></returns>
+        public static bool GetKeyDown(this IInput self, int hashCode)
+        {
+            return self[hashCode].KeyDown;
+        }
+
+        /// <summary>
+        /// 取得輸入軸是否按壓中
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="hashCode"></param>
+        /// <returns></returns>
+        public static bool GetKey(this IInput self, int hashCode)
+        {
+            return self[hashCode].Key;
+        }
+
+        /// <summary>
+        /// 取得輸入軸是否放開
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="hashCode"></param>
+        /// <returns></returns>
+        public static bool GetKeyUp(this IInput self, int hashCode)
+        {
+            return self[hashCode].KeyUp;
+        }
+
+        #endregion
 
         /// <summary>
         /// Unity Input.GetKeyDown
