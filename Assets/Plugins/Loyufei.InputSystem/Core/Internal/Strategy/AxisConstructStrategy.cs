@@ -8,7 +8,7 @@ namespace Loyufei.InputSystem
 {
     internal static class AxisConstructStrategy
     {
-        internal static Dictionary<EInputType, IAxisConstructor> Constructors { get; } = new()
+        internal static Dictionary<object, IAxisConstructor> Strategy { get; } = new()
         {
             { EInputType.KeyBoard      , new KeyCodeAxisConstructor()        },
             { EInputType.GameController, new GameControllerAxisConstructor() },
@@ -21,9 +21,19 @@ namespace Loyufei.InputSystem
                 return default;
             }
 
-            var exist = Constructors.TryGetValue(inputType, out var constructor);
+            var exist = Strategy.TryGetValue(inputType, out var constructor);
 
             return exist ? constructor : default;
+        }
+
+        internal static bool AddStrategy(object key, IAxisConstructor constructor) 
+        {
+            return Strategy.TryAdd(key, constructor);
+        }
+
+        internal static bool RemoveStrategy(object key) 
+        {
+            return Strategy.Remove(key);
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Loyufei.InputSystem
 {
-    public class KeyCodeAxisConstructor : IAxisConstructor
+    public struct KeyCodeAxisConstructor : IAxisConstructor
     {
         public IAxis Construct(AxisPair pair, IInputBindings bindings)
         {

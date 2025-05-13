@@ -1,15 +1,19 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Loyufei.InputSystem
 {
-    public class MonoDefaultAxis : MonoBehaviour, IInputAxis
+    [CreateAssetMenu(fileName = "Default Axis", menuName = "Loyufei InputSystem/Default Axis", order = 1)]
+    public class ScriptableObjectDefaultAxis : ScriptableObject, IInputAxis
     {
         [SerializeField]
         private List<AxisPair> _Axis = new();
 
-        private void Awake() 
+        public void SetAsDefault()
         {
             InputManager.SetDefault(this);
         }

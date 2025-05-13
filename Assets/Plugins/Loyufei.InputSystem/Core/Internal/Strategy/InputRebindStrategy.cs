@@ -8,7 +8,7 @@ namespace Loyufei.InputSystem
 {
     public static class InputRebindStrategy
     {
-        internal static Dictionary<ESameEncounter, IInputRebinder> Strategy { get; } = new()
+        internal static Dictionary<object, IInputRebinder> Strategy { get; } = new()
         {
             { ESameEncounter.None     , new NoneRebinder()},
             { ESameEncounter.Ignore   , new IgnoreRebinder()},
@@ -19,6 +19,16 @@ namespace Loyufei.InputSystem
         internal static IInputRebinder GetRebinder(ESameEncounter encounter) 
         {
             return Strategy[encounter];
+        }
+
+        internal static bool AddStrategy(object key, IInputRebinder rebinder)
+        {
+            return Strategy.TryAdd(key, rebinder);
+        }
+
+        internal static bool RemoveStrategy(object key)
+        {
+            return Strategy.Remove(key);
         }
     }
 }

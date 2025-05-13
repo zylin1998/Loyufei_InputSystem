@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Loyufei.InputSystem
 {
-    public class GameControllerAxisConstructor : IAxisConstructor
+    public struct GameControllerAxisConstructor : IAxisConstructor
     {
         public IAxis Construct(AxisPair pair, IInputBindings bindings)
         {

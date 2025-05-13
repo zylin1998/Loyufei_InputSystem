@@ -55,6 +55,13 @@ namespace Loyufei.InputSystem
             set => Instance.SameEncounter = value; 
         }
 
+        public static KeyCode[] KeyCodes { get; } 
+            = Enum.GetValues(typeof(EInputCode)).Cast<KeyCode>().ToArray();
+
+        public static KeyCode[] IgnoreKeyCode { get; set; } = new KeyCode[0];
+
+        public static KeyCode[] AvailableKeyCode => KeyCodes.Except(IgnoreKeyCode).ToArray();
+
         #endregion
     }
 }

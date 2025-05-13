@@ -3,19 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static UnityEngine.UI.InputField;
+using UnityEngine.UIElements;
 
 namespace Loyufei.InputSystem
 {
-    internal class ExchangeRebinder : IInputRebinder
+    internal struct IgnoreRebinder : IInputRebinder
     {
         public InputRebindResult Rebind(IInputBindings bindings, int uuid, EInputCode rebind)
         {
             var target = bindings[uuid];
-
-            if (bindings.TryGet(rebind, out var same))
-            {
-                same.Reset(target.InputCode);
-            }
+            var same   = bindings[rebind];
 
             target.Reset(rebind);
 

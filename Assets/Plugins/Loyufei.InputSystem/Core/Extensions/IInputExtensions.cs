@@ -7,50 +7,115 @@ namespace Loyufei.InputSystem
 {
     public static class IInputExtensions
     {
+        /// <summary>
+        /// 取得輸入軸浮點數數值
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="axisName"></param>
+        /// <returns></returns>
         public static float GetAxis(this IInput self, string axisName) 
         {
             return self[axisName].Axis;
         }
 
+        /// <summary>
+        /// 取得輸入軸浮點數整數數值
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="axisName"></param>
+        /// <returns></returns>
         public static float GetAxisRaw(this IInput self, string axisName)
         {
             return self[axisName].AxisRaw;
         }
 
+        /// <summary>
+        /// 取得輸入軸是否按下
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="axisName"></param>
+        /// <returns></returns>
         public static bool GetKeyDown(this IInput self, string axisName)
         {
             return self[axisName].KeyDown;
         }
 
+        /// <summary>
+        /// 取得輸入軸是否按壓中
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="axisName"></param>
+        /// <returns></returns>
         public static bool GetKey(this IInput self, string axisName)
         {
             return self[axisName].Key;
         }
 
+        /// <summary>
+        /// 取得輸入軸是否放開
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="axisName"></param>
+        /// <returns></returns>
         public static bool GetKeyUp(this IInput self, string axisName)
         {
             return self[axisName].KeyUp;
         }
 
+        /// <summary>
+        /// Unity Input.GetKeyDown
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="keyCode"></param>
+        /// <returns></returns>
         public static bool GetKeyDown(this IInput self, KeyCode keyCode) 
         {
             return Input.GetKeyDown(keyCode);
         }
 
+        /// <summary>
+        /// Unity Input.GetKey
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="keyCode"></param>
+        /// <returns></returns>
         public static bool GetKey(this IInput self, KeyCode keyCode)
         {
             return Input.GetKey(keyCode);
         }
 
+        /// <summary>
+        /// Unity Input.GetKeyUp
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="keyCode"></param>
+        /// <returns></returns>
         public static bool GetKeyUp(this IInput self, KeyCode keyCode)
         {
             return Input.GetKeyUp(keyCode);
         }
 
+        /// <summary>
+        /// 確認是否有按鍵被按下
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static bool AnyKeyDown(this IInput self)
+        {
+            return Input.anyKeyDown;
+        }
+
+        /// <summary>
+        /// 確認是否有按鍵被按壓中
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
         public static bool AnyKey(this IInput self)
         {
             return Input.anyKey;
         }
+
+        #region InputManager Method Adapt
 
         /// <summary>
         /// 更改指定輸入
@@ -103,5 +168,7 @@ namespace Loyufei.InputSystem
 
             return IInputList.Default.GetPairs();
         }
+
+        #endregion
     }
 }

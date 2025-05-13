@@ -272,6 +272,22 @@ namespace Loyufei.InputSystem
             return new(list);
         }
 
+        /// <summary>
+        /// 取得當前所有輸入清單的資訊
+        /// </summary>
+        /// <returns></returns>
+        internal InputPackage GetAllList(EInputType inputType)
+        {
+            var list = new List<IInputList>();
+
+            for (int i = minIndex; i <= maxIndex; i++)
+            {
+                list.Add(FetchList(i, inputType));
+            }
+
+            return new(list);
+        }
+
         #endregion
 
         #region Private Method

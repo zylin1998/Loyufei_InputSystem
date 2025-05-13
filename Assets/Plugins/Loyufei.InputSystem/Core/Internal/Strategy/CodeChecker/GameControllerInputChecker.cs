@@ -7,7 +7,7 @@ using XInputDotNetPure;
 
 namespace Loyufei.InputSystem
 {
-    public class GameControllerInputChecker : IInputCodeChecker
+    public struct GameControllerInputChecker : IInputCodeChecker
     {
         public EInputCode Check(int playerIndex) 
         {

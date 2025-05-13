@@ -1,19 +1,23 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Loyufei.InputSystem
 {
-    public class MonoDefaultInput : MonoBehaviour, IInputList
+    [CreateAssetMenu(fileName = "Default Input", menuName = "Loyufei InputSystem/Default Input", order = 1)]
+    public class ScriptableObjectDefaultInput : ScriptableObject, IInputList
     {
         [SerializeField]
         private List<InputPair> _Pairs = new();
         [SerializeField]
-        private EInputType _InputType;
+        private EInputType      _InputType;
 
         public EInputType InputType => _InputType;
 
-        private void Awake()
+        public void SetAsDefault()
         {
             InputManager.SetDefault(this);
         }

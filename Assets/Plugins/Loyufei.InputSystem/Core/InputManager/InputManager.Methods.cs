@@ -111,16 +111,6 @@ namespace Loyufei.InputSystem
         }
 
         /// <summary>
-        /// 重置清單的數量
-        /// </summary>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        public static IEnumerable<IInputList> Resize(int count) 
-        {
-            return Instance.Resize(count);
-        }
-
-        /// <summary>
         /// 取得輸入清單
         /// </summary>
         /// <param name="Index"></param>
@@ -137,6 +127,25 @@ namespace Loyufei.InputSystem
         public static InputPackage FetchLists() 
         {
             return Instance.GetAllList();
+        }
+
+        /// <summary>
+        /// 取得特定輸入平台的所有輸入清單資訊
+        /// </summary>
+        /// <returns></returns>
+        public static InputPackage FetchLists(EInputType inputType)
+        {
+            return Instance.GetAllList(inputType);
+        }
+
+        /// <summary>
+        /// 重置清單的數量
+        /// </summary>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public static IEnumerable<IInputList> Resize(int count) 
+        {
+            return Instance.Resize(count);
         }
 
         /// <summary>
@@ -171,6 +180,76 @@ namespace Loyufei.InputSystem
         {
             return Instance.ResetList(index, inputType);
         }
+
+        #region Input Management Strategy
+
+        /// <summary>
+        /// 新增輸入軸建構策略
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="strategy"></param>
+        /// <returns></returns>
+        public static bool AddStrategy(object key, IAxisConstructor strategy) 
+        {
+            return AxisConstructStrategy.AddStrategy(key, strategy);
+        }
+
+        /// <summary>
+        /// 新增輸入檢測策略
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="strategy"></param>
+        /// <returns></returns>
+        public static bool AddStrategy(object key, IInputCodeChecker strategy)
+        {
+            return InputCodeCheckStrategy.AddStrategy(key, strategy);
+        }
+
+        /// <summary>
+        /// 新增輸入重新綁定策略
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="strategy"></param>
+        /// <returns></returns>
+        public static bool AddStrategy(object key, IInputRebinder strategy)
+        {
+            return InputRebindStrategy.AddStrategy(key, strategy);
+        }
+
+        /// <summary>
+        /// 以委派方式新增輸入軸建構策略
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
+        public static bool AddStrategy(object key, Func<AxisPair, IInputBindings, IAxis> callback) 
+        {
+            return AddStrategy(key, new CallbackConstructor(callback));
+        }
+
+        /// <summary>
+        /// 以委派方式新增輸入檢測策略
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
+        public static bool AddStrategy(object key, Func<int, EInputCode> callback)
+        {
+            return AddStrategy(key, new CallbackChecker(callback));
+        }
+
+        /// <summary>
+        /// 以委派方式新增輸入重新綁定策略
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
+        public static bool AddStrategy(object key, Func<IInputBindings, int, EInputCode, InputRebindResult> callback)
+        {
+            return AddStrategy(key, new CallbackRebinder(callback));
+        }
+
+        #endregion
 
         #endregion
     }

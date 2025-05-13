@@ -7,15 +7,12 @@ using UnityEngine;
 
 namespace Loyufei.InputSystem
 {
-    internal class KeyCodeChecker : IInputCodeChecker
+    internal struct KeyCodeChecker : IInputCodeChecker
     {
         public EInputCode Check(int playerIndex) 
         {
-            var array = Enum
-                .GetValues(typeof(EInputCode))
-                .Cast<KeyCode>()
-                .ToArray();
-            
+            var array = InputManager.AvailableKeyCode;
+
             return (EInputCode)array.FirstOrDefault(key => Input.GetKeyDown(key));
         }
     }
