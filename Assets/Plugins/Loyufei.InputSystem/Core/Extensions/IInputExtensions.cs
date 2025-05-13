@@ -233,6 +233,16 @@ namespace Loyufei.InputSystem
             return IInputList.Default.GetPairs();
         }
 
+        /// <summary>
+        /// 切換UI控制的輸入頻道為此頻道
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static void SetAsUIControl(this IInput self)
+        {
+            InputManager.SwitchUIControlInput(self.Index);
+        }
+
         #endregion
     }
 }
