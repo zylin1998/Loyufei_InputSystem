@@ -40,7 +40,7 @@ namespace Loyufei.InputSystem.RuntimeTest
 
         private void Start()
         {
-            Input = InputManager.FetchInput(1, EInputType.KeyBoard);
+            Input = InputManager.FetchInput(1, GlobalParameter.InputType);
 
             _Changers.ForEach(c => c.AddListener(() => Rebind(c.UUID)));
 

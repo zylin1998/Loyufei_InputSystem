@@ -15,7 +15,7 @@ namespace Loyufei.InputSystem.RuntimeTest
 
         void Start()
         {
-            Input = InputManager.FetchInput(1, EInputType.KeyBoard);
+            Input = InputManager.FetchInput(1, GlobalParameter.InputType);
         }
 
         void Update()

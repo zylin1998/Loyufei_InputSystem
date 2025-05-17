@@ -28,7 +28,7 @@ namespace Loyufei.InputSystem.RuntimeTest
         {
             var package = InputManager.FetchLists();
 
-            Input = InputManager.FetchInput(1, EInputType.KeyBoard);
+            Input = InputManager.FetchInput(1, GlobalParameter.InputType);
 
             _EventHashCode = Input.GetHashCode("Event");
         }
