@@ -11,7 +11,9 @@ namespace Loyufei.InputSystem
     {
         public EInputCode Check(int playerIndex) 
         {
-            var state = GamePad.GetState((PlayerIndex)playerIndex);
+            var index = playerIndex - 1;
+
+            var state = GamePad.GetState((PlayerIndex)index);
 
             if (state.Buttons.A == ButtonState.Pressed) { return EInputCode.JoystickA; }
             if (state.Buttons.B == ButtonState.Pressed) { return EInputCode.JoystickB; }

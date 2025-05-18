@@ -10,6 +10,8 @@ namespace Loyufei.InputSystem
         private BindingPair _Positive;
         private BindingPair _Negative;
 
+        private int _GamePadIndex;
+
         private float _HoldTime = 0f;
         private float _ReleasedTime = 0f;
         private float _DeltaTime = 0f;
@@ -22,6 +24,8 @@ namespace Loyufei.InputSystem
         {
             _Pair  = pair;
             _Index = list.Index;
+
+            _GamePadIndex = _Index - 1;
 
             list.TryGet(Pair.PositiveIndex, out _Positive);
             list.TryGet(Pair.NegativeIndex, out _Negative);
@@ -105,7 +109,7 @@ namespace Loyufei.InputSystem
                 return false;
             }
 
-            return GetValue(GamePad.GetState((PlayerIndex)_Index), inputCode);
+            return GetValue(GamePad.GetState((PlayerIndex)_GamePadIndex), inputCode);
         }
 
         private bool GetValue(GamePadState state, EInputCode key)

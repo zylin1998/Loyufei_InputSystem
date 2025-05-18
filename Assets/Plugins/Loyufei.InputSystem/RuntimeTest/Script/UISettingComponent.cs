@@ -40,7 +40,7 @@ namespace Loyufei.InputSystem.RuntimeTest
 
         private void Start()
         {
-            Input = InputManager.FetchInput(1, GlobalParameter.InputType);
+            Input = InputManager.FetchInput(GlobalParameter.PlayerIndex, GlobalParameter.InputType);
 
             _Changers.ForEach(c => c.AddListener(() => Rebind(c.UUID)));
 

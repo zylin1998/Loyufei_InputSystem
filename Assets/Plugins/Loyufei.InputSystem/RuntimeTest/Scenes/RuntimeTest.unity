@@ -4185,6 +4185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _InputType: 1
+  _PlayerIndex: 1
 --- !u!1 &2078194402
 GameObject:
   m_ObjectHideFlags: 0
