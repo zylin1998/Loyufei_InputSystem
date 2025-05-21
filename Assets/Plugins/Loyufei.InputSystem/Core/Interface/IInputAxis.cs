@@ -9,6 +9,10 @@ namespace Loyufei.InputSystem
     public interface IInputAxis
     {
         /// <summary>
+        /// 輸入軸清單的層級
+        /// </summary>
+        public int Layer { get; }
+        /// <summary>
         /// 取得所有輸入軸資訊
         /// </summary>
         /// <returns></returns>
@@ -21,6 +25,8 @@ namespace Loyufei.InputSystem
 
         private class DefaultPairs : IInputAxis 
         {
+            public int Layer => int.MinValue;
+
             private List<AxisPair> _Pairs = new();
 
             public IEnumerable<AxisPair> GetPairs() => _Pairs;

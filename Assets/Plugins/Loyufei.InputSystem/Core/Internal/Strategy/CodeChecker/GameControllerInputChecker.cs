@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XInputDotNetPure;
+using UnityEngine;
 
 namespace Loyufei.InputSystem
 {
@@ -12,7 +13,7 @@ namespace Loyufei.InputSystem
         public EInputCode Check(int playerIndex) 
         {
             var index = playerIndex - 1;
-
+            
             var state = GamePad.GetState((PlayerIndex)index);
 
             if (state.Buttons.A == ButtonState.Pressed) { return EInputCode.JoystickA; }
