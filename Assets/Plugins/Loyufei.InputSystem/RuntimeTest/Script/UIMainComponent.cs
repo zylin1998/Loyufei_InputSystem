@@ -15,7 +15,7 @@ namespace Loyufei.InputSystem.RuntimeTest
 
         void Start()
         {
-            Input = InputManager.FetchInput(GlobalParameter.PlayerIndex, GlobalParameter.InputType);
+            Input = InputManager.FetchInput(GlobalParameter.PlayerIndex, GlobalParameter.InputType, 1);
         }
 
         void Update()

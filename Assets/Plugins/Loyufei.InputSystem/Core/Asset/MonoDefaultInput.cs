@@ -7,6 +7,8 @@ namespace Loyufei.InputSystem
     public class MonoDefaultInput : MonoBehaviour, IInputList
     {
         [SerializeField]
+        private int _Layer;
+        [SerializeField]
         private List<InputPair> _Pairs = new();
         [SerializeField]
         private EInputType _InputType;
@@ -15,7 +17,7 @@ namespace Loyufei.InputSystem
 
         private void Awake()
         {
-            InputManager.SetDefault(this);
+            InputManager.SetDefault(this, _Layer);
         }
 
         public void Init(IInputList inputList)
@@ -26,27 +28,6 @@ namespace Loyufei.InputSystem
         public IEnumerable<InputPair> GetPairs()
         {
             return _Pairs;
-        }
-
-        private void Reset()
-        {
-            if (_InputType == EInputType.KeyBoard)
-            {
-                _Pairs = new()
-                {
-                    new (1, EInputCode.Return),
-                    new (2, EInputCode.Escape),
-                };
-            }
-
-            if (_InputType == EInputType.GameController)
-            {
-                _Pairs = new()
-                {
-                    new (1, EInputCode.Start),
-                    new (2, EInputCode.Back),
-                };
-            }
         }
     }
 }

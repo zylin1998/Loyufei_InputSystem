@@ -15,7 +15,8 @@ namespace Loyufei.InputSystem.RuntimeTest
         [SerializeField]
         private List<InputChanger> _Changers;
 
-        public IInput Input { get; private set; }
+        public IInput Input       { get; private set; }
+        public IInput InputRebind { get; private set; }
 
         public InputChanger this[int uuid] => _Changers.Find(c => c.UUID == uuid);
 
@@ -40,8 +41,11 @@ namespace Loyufei.InputSystem.RuntimeTest
 
         private void Start()
         {
-            Input = InputManager.FetchInput(GlobalParameter.PlayerIndex, GlobalParameter.InputType);
+            Input       = InputManager.FetchInput(GlobalParameter.PlayerIndex, GlobalParameter.InputType, 1);
+            InputRebind = InputManager.FetchInput(GlobalParameter.PlayerIndex, GlobalParameter.InputType, 0);
 
+            InputManager.SwitchUIControlInput(Input.Index, 1);
+            
             _Changers.ForEach(c => c.AddListener(() => Rebind(c.UUID)));
 
             foreach (var pair in Input.FetchList().GetPairs()) 
@@ -63,8 +67,8 @@ namespace Loyufei.InputSystem.RuntimeTest
         private async void Rebind(int uuid) 
         {
             _Mask.gameObject.SetActive(true);
-
-            var result = await Input.Rebind(uuid);
+            Debug.Log("Rebind");
+            var result = await InputRebind.Rebind(uuid);
             
             if (result.Successed) 
             {

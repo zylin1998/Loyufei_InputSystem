@@ -36,16 +36,6 @@ namespace Loyufei.InputSystem
         }
 
         /// <summary>
-        /// 自訂輸入存取數量
-        /// </summary>
-        public static int IndexCount
-        {
-            get => Instance.IndexCount;
-
-            set => Instance.IndexCount = value;
-        }
-
-        /// <summary>
         /// 輸入更換重疊時動作選擇
         /// </summary>
         public static ESameEncounter SameEncounter

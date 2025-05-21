@@ -11,6 +11,8 @@ namespace Loyufei.InputSystem
     public class ScriptableObjectDefaultInput : ScriptableObject, IInputList
     {
         [SerializeField]
+        private int _Layer;
+        [SerializeField]
         private List<InputPair> _Pairs = new();
         [SerializeField]
         private EInputType      _InputType;
@@ -19,7 +21,7 @@ namespace Loyufei.InputSystem
 
         public void SetAsDefault()
         {
-            InputManager.SetDefault(this);
+            InputManager.SetDefault(this, _Layer);
         }
 
         public void Init(IInputList inputList)

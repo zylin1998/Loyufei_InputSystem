@@ -15,21 +15,12 @@ namespace Loyufei.InputSystem
 
         private void Awake() 
         {
-            InputManager.SetDefault(this);
+            InputManager.SetDefault(this, Layer);
         }
 
         public IEnumerable<AxisPair> GetPairs()
         {
             return _Axis;
-        }
-
-        private void Reset()
-        {
-            _Axis = new()
-            {
-                new("Submit", 1, 0, false, 1f),
-                new("Cancel", 2, 0, false, 1f),
-            };
         }
     }
 }

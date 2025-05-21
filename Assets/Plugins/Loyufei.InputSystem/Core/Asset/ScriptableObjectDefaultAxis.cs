@@ -19,7 +19,7 @@ namespace Loyufei.InputSystem
 
         public void SetAsDefault()
         {
-            InputManager.SetDefault(this);
+            InputManager.SetDefault(this, Layer);
         }
 
         public IEnumerable<AxisPair> GetPairs()

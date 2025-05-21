@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Threading.Tasks;
 using System.Threading;
+using static UnityEditor.Experimental.GraphView.GraphView;
+using static UnityEngine.UI.InputField;
 
 namespace Loyufei.InputSystem
 {
@@ -18,58 +20,27 @@ namespace Loyufei.InputSystem
 
         #endregion
 
-        [SerializeField, Range(minIndex, maxIndex)]
-        private int             _IndexCount = maxIndex;
+        #region Fields
         [SerializeField]
-        private ESameEncounter  _SameEncounter = ESameEncounter.None;
+        private ESameEncounter   _SameEncounter = ESameEncounter.None;
         [SerializeField]
-        private List<AxisPair>  _Axis = new();
+        private UIControlInput   _UIControl;
         [SerializeField]
-        private UIControlInput  _UIControl;
-        [SerializeField]
-        private List<InputList> _InputLists = new();
+        private List<InputLayer> _Layers        = new List<InputLayer>();
+        
+        private readonly CancellationTokenSource _TokenSource = new();
 
-        private CancellationTokenSource _TokenSource = new();
+        #endregion
 
         #region Internal Properties
 
         internal UIControlInput UIControl => _UIControl;
-
-        internal Dictionary<int, IInput> Inputs { get; } = new();
-
-        internal int IndexCount
-        {
-            get => _IndexCount;
-
-            set
-            {
-                if (_IndexCount == value) { return; }
-
-                _IndexCount = value > maxIndex ? maxIndex : value;
-                _IndexCount = value < minIndex ? minIndex : value;
-            }
-        }
 
         internal ESameEncounter SameEncounter 
         {
             get => _SameEncounter; 
             
             set => _SameEncounter = value; 
-        }
-
-        internal Dictionary<EInputType, IInputList> DefaultInputLists { get; } = new()
-        {
-            { EInputType.KeyBoard      , IInputList.Default },
-            { EInputType.GameController, IInputList.Default },
-        };
-
-        #endregion
-
-        #region Constructors
-
-        internal InternalTaskDispatcher() : base()
-        {
-            _TokenSource = new();
         }
 
         #endregion
@@ -97,6 +68,16 @@ namespace Loyufei.InputSystem
 
         #region Internal Method
 
+        internal void SetIndexCount(int indexCount, int layer)
+        {
+            if (!IsLayerValid(layer, out var inputLayer))
+            {
+                return;
+            }
+
+            inputLayer.IndexCount = indexCount;
+        }
+
         /// <summary>
         /// 判斷輸入索引是否有效
         /// </summary>
@@ -114,18 +95,28 @@ namespace Loyufei.InputSystem
         /// 設置UI控制輸入需要的輸入索引
         /// </summary>
         /// <param name="index"></param>
-        internal void SetUIControl(int index) 
+        internal void SetUIControl(int index, int layer) 
         {
-            _UIControl.SetIndex(Inputs[index]);
+            if (!IsLayerValid(layer, out var inputLayer)) 
+            {
+                return; 
+            }
+            
+            _UIControl.SetIndex(inputLayer.Inputs[index]);
         }
 
         /// <summary>
         /// 設置輸入軸資訊
         /// </summary>
         /// <param name="inputAxis"></param>
-        internal void SetAxis(IInputAxis inputAxis) 
+        internal void SetAxis(IInputAxis inputAxis, int layer) 
         {
-            _Axis = inputAxis.GetPairs().ToList();
+            if (!IsLayerValid(layer, out var inputLayer, true))
+            {
+                return;
+            }
+
+            inputLayer.SetAxis(inputAxis);
         }
 
         /// <summary>
@@ -133,9 +124,14 @@ namespace Loyufei.InputSystem
         /// </summary>
         /// <param name="inputList"></param>
         /// <param name="inputType"></param>
-        internal void SetList(IInputList inputList) 
+        internal void SetList(IInputList inputList, int layer) 
         {
-            DefaultInputLists[inputList.InputType] = inputList;
+            if (!IsLayerValid(layer, out var inputLayer, true))
+            {
+                return;
+            }
+            
+            inputLayer.DefaultInputLists[inputList.InputType] = inputList;
         }
 
         /// <summary>
@@ -144,11 +140,16 @@ namespace Loyufei.InputSystem
         /// <param name="index"></param>
         /// <param name="inputType"></param>
         /// <returns></returns>
-        internal IEnumerable<InputPair> ResetList(int index, EInputType type) 
+        internal IEnumerable<InputPair> ResetList(int index, EInputType type, int layer) 
         {
-            var list = FetchList(index, type);
+            if (!IsLayerValid(layer, out var inputLayer))
+            {
+                return IInputList.Default.GetPairs();
+            }
 
-            list.Init(DefaultInputLists[type]);
+            var list = FetchList(index, type, layer);
+
+            list.Init(inputLayer.DefaultInputLists[type]);
 
             return list.GetPairs();
         }
@@ -159,22 +160,14 @@ namespace Loyufei.InputSystem
         /// <param name="index"></param>
         /// <param name="inputBindings"></param>
         /// <returns></returns>
-        internal IInput FetchInput(int index, IInputBindings inputBindings, EInputType inputType)
+        internal IInput FetchInput(int index, IInputBindings inputBindings, EInputType inputType, int layer)
         {
-            var exist = Inputs.TryGetValue(index, out var input);
-
-            if (!exist)
+            if (!IsLayerValid(layer, out var inputLayer))
             {
-                var constructor = AxisConstructStrategy.GetConstructor(inputType);
-
-                input = new InputBase(constructor, inputType, index);
-
-                if (input is IInputBinder binder) { binder.Binding(_Axis, inputBindings); }
-
-                Inputs.TryAdd(index, input);
+                return IInput.Default;
             }
-
-            return input;
+            
+            return inputLayer.GetInput(index, inputBindings, inputType);
         }
 
         /// <summary>
@@ -182,23 +175,14 @@ namespace Loyufei.InputSystem
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        internal InputList FetchList(int index, EInputType inputType) 
+        internal InputList FetchList(int index, EInputType inputType, int layer) 
         {
-            var list = _InputLists.Find(l => l.Index == index && l.InputType == inputType);
+            if (!IsLayerValid(layer, out var inputLayer))
+            {
+                return default;
+            }
 
-            if (list) { return list; }
-
-            list = new GameObject("InputList" + index).AddComponent<InputList>();
-
-            list.SetIndex(index);
-            list.SetInputType(inputType);
-            list.Init(DefaultInputLists[inputType]);
-
-            list.transform.SetParent(transform);
-
-            _InputLists.Add(list);
-
-            return list;
+            return inputLayer.GetList(index, inputType);
         }
 
         /// <summary>
@@ -207,18 +191,14 @@ namespace Loyufei.InputSystem
         /// <param name="input"></param>
         /// <param name="listIndex"></param>
         /// <returns></returns>
-        internal bool SwitchList(IInput input, int listIndex) 
+        internal bool SwitchList(IInput input, int listIndex, int layer) 
         {
-            if (input is IInputBinder binder) 
+            if (!IsLayerValid(layer, out var inputLayer))
             {
-                var list = FetchList(listIndex, input.InputType);
-
-                binder.Binding(_Axis, list);
-
-                return true;
+                return false;
             }
 
-            return false;
+            return inputLayer.SwitchList(input, listIndex);
         }
 
         /// <summary>
@@ -226,9 +206,14 @@ namespace Loyufei.InputSystem
         /// </summary>
         /// <param name="size"></param>
         /// <returns></returns>
-        internal IEnumerable<IInputList> Resize(int size) 
+        internal IEnumerable<IInputList> Resize(int size, int layer) 
         {
-            return (_InputLists = SizeCheck(size).ToList());
+            if (!IsLayerValid(layer, out var inputLayer))
+            {
+                return new IInputList[0];
+            }
+
+            return inputLayer.Resize(size);
         }
         
         /// <summary>
@@ -255,18 +240,23 @@ namespace Loyufei.InputSystem
         /// 取得當前所有輸入清單的資訊
         /// </summary>
         /// <returns></returns>
-        internal InputPackage GetAllList() 
+        internal InputPackage GetAllList(int layer) 
         {
+            if (!IsLayerValid(layer, out var inputLayer))
+            {
+                return new();
+            }
+
             var list = new List<IInputList>();
 
             for (int i = minIndex; i <= maxIndex; i++) 
             {
-                list.Add(FetchList(i, EInputType.KeyBoard));
+                list.Add(FetchList(i, EInputType.KeyBoard, layer));
             }
 
             for (int i = minIndex; i <= maxIndex; i++)
             {
-                list.Add(FetchList(i, EInputType.GameController));
+                list.Add(FetchList(i, EInputType.GameController, layer));
             }
 
             return new(list);
@@ -276,13 +266,13 @@ namespace Loyufei.InputSystem
         /// 取得當前所有輸入清單的資訊
         /// </summary>
         /// <returns></returns>
-        internal InputPackage GetAllList(EInputType inputType)
+        internal InputPackage GetAllList(EInputType inputType, int layer)
         {
             var list = new List<IInputList>();
 
             for (int i = minIndex; i <= maxIndex; i++)
             {
-                list.Add(FetchList(i, inputType));
+                list.Add(FetchList(i, inputType, layer));
             }
 
             return new(list);
@@ -291,31 +281,6 @@ namespace Loyufei.InputSystem
         #endregion
 
         #region Private Method
-
-        /// <summary>
-        /// 整理清單數量
-        /// </summary>
-        /// <param name="size"></param>
-        /// <returns></returns>
-        internal IEnumerable<InputList> SizeCheck(int size)
-        {
-            var index = 0;
-
-            foreach (var input in _InputLists) 
-            {
-                if (input.Index <= size) 
-                {
-                    yield return input;
-
-                    index++;
-                }
-
-                else 
-                {
-                    Destroy(input.gameObject); 
-                }
-            }
-        }
 
         /// <summary>
         /// 異步等待按鍵被按下
@@ -342,6 +307,180 @@ namespace Loyufei.InputSystem
             return code;
         }
 
+        /// <summary>
+        /// 確認階層是否存在
+        /// </summary>
+        /// <param name="layer"></param>
+        /// <param name="inputLayer"></param>
+        /// <param name="createInstance"></param>
+        /// <returns></returns>
+        private bool IsLayerValid(int layer, out InputLayer inputLayer, bool createInstance = false) 
+        {
+            inputLayer = _Layers.Find(inputLayer => inputLayer.Layer == layer);
+
+            if (inputLayer == null) 
+            {
+                if(!createInstance) 
+                {
+                    Debug.LogError("無效輸入階層編號");
+
+                    return false; 
+                }
+
+                inputLayer = new(layer, transform);
+
+                _Layers.Add(inputLayer);
+            }
+
+            return true;
+        }
+
         #endregion
+
+        [Serializable]
+        internal class InputLayer 
+        {
+            #region Constructor
+
+            public InputLayer(int layer, Transform root) 
+            {
+                _Layer = layer;
+                _Root  = root;
+            }
+
+            #endregion
+
+            #region Fields
+
+            [SerializeField]
+            private int             _Layer;
+            [SerializeField, Range(minIndex, maxIndex)]
+            private int             _IndexCount = maxIndex;
+            [SerializeField]
+            private List<AxisPair>  _Axis = new();
+            [SerializeField]
+            private List<InputList> _InputLists = new();
+
+            private Transform _Root;
+
+            #endregion
+
+            #region Property
+
+            internal int Layer => _Layer;
+
+            internal Dictionary<int, IInput> Inputs { get; } = new();
+
+            internal Dictionary<EInputType, IInputList> DefaultInputLists { get; } = new()
+            {
+                { EInputType.KeyBoard      , IInputList.Default },
+                { EInputType.GameController, IInputList.Default },
+            };
+
+            internal int IndexCount
+            {
+                get => _IndexCount;
+
+                set => _IndexCount = value ;
+            }
+
+            #endregion
+
+            #region Public Method
+
+            public void SetAxis(IInputAxis axis) 
+            {
+                _Axis = axis.GetPairs().ToList();
+            }
+
+            public IInput GetInput(int index, IInputBindings inputBindings, EInputType inputType) 
+            {
+                var exist = Inputs.TryGetValue(index, out var input);
+
+                if (!exist)
+                {
+                    var constructor = AxisConstructStrategy.GetConstructor(inputType);
+
+                    input = new InputBase(constructor, inputType, index);
+
+                    if (input is IInputBinder binder) { binder.Binding(_Axis, inputBindings); }
+
+                    Inputs.TryAdd(index, input);
+                }
+
+                return input;
+            }
+
+            public InputList GetList(int index, EInputType inputType) 
+            {
+                var list = _InputLists.Find(l => l.Index == index && l.InputType == inputType);
+
+                if (list) { return list; }
+
+                list = new GameObject("InputList" + index).AddComponent<InputList>();
+
+                list.SetIndex(index);
+                list.SetInputType(inputType);
+                list.Init(DefaultInputLists[inputType]);
+
+                list.transform.SetParent(_Root);
+
+                _InputLists.Add(list);
+
+                return list;
+            }
+
+            public bool SwitchList(IInput input, int listIndex) 
+            {
+                if (!Inputs.Values.Contains(input)) { return false; }
+
+                if (input is IInputBinder binder)
+                {
+                    var list = GetList(listIndex, input.InputType);
+
+                    binder.Binding(_Axis, list);
+
+                    return true;
+                }
+
+                return false;
+            }
+
+            public IEnumerable<IInputList> Resize(int size) 
+            {
+                return (_InputLists = SizeCheck(size).ToList());
+            }
+
+            #endregion
+
+            #region Private Method
+
+            /// <summary>
+            /// 整理清單數量
+            /// </summary>
+            /// <param name="size"></param>
+            /// <returns></returns>
+            private IEnumerable<InputList> SizeCheck(int size)
+            {
+                var index = 0;
+
+                foreach (var input in _InputLists)
+                {
+                    if (input.Index <= size)
+                    {
+                        yield return input;
+
+                        index++;
+                    }
+
+                    else
+                    {
+                        Destroy(input.gameObject);
+                    }
+                }
+            }
+
+            #endregion
+        }
     }
 }

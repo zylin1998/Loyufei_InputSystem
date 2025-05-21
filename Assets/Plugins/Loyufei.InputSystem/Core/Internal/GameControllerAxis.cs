@@ -53,20 +53,19 @@ namespace Loyufei.InputSystem
             }
         }
 
+        private int _HoldFrame     = 0;
+        private int _ReleasedFrame = 0;
+
         public bool KeyDown
         {
             get
             {
-                if (GetValue(Positive.InputCode))
+                if (_HoldFrame == 0)
                 {
-                    (_ReleasedTime, _DeltaTime) = _ReleasedTime == 0 ? (0, _DeltaTime) : (0, 0);
-
-                    _DeltaTime = _DeltaTime == 0 ? Time.deltaTime : _DeltaTime;
-
-                    return Hold(true) <= _DeltaTime;
+                    _HoldFrame = GetValue(Positive.InputCode) ? Time.frameCount : 0;
                 }
 
-                return false;
+                return _HoldFrame == Time.frameCount;
             }
         }
 
@@ -74,12 +73,7 @@ namespace Loyufei.InputSystem
         {
             get
             {
-                if (GetValue(Positive.InputCode))
-                {
-                    return Hold(true) >= _DeltaTime && !KeyDown;
-                }
-
-                return false;
+                return _HoldFrame != 0 && !KeyDown;
             }
         }
 
@@ -87,18 +81,16 @@ namespace Loyufei.InputSystem
         {
             get
             {
-                if (_HoldTime == 0 && _ReleasedTime == 0) { return false; }
-
-                if (!GetValue(Positive.InputCode))
+                if (_HoldFrame != 0) 
                 {
-                    (_HoldTime, _DeltaTime) = _HoldTime == 0 ? (0, _DeltaTime) : (0, 0);
-
-                    _DeltaTime = _DeltaTime == 0 ? Time.deltaTime : _DeltaTime;
-
-                    return Release(true) <= _DeltaTime;
+                    if (!GetValue(Positive.InputCode)) 
+                    {
+                        _HoldFrame = 0;
+                        _ReleasedFrame = Time.frameCount;
+                    }
                 }
 
-                return false;
+                return _ReleasedFrame == Time.frameCount;
             }
         }
 
@@ -156,15 +148,6 @@ namespace Loyufei.InputSystem
             if (_HoldTime == 0) { _HoldTime = Time.realtimeSinceStartup; }
 
             return Time.realtimeSinceStartup - _HoldTime;
-        }
-
-        private float Release(bool isRelease)
-        {
-            if (!isRelease) { return (_ReleasedTime = 0f); }
-
-            if (_ReleasedTime == 0) { _ReleasedTime = Time.realtimeSinceStartup; }
-
-            return Time.realtimeSinceStartup - _ReleasedTime;
         }
 
         public AxisValue GetValue()
