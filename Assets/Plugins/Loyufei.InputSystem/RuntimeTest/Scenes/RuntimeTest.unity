@@ -4188,7 +4188,7 @@ MonoBehaviour:
   - _UUID: 6
     _InputCode: 601
   - _UUID: 7
-    _InputCode: 602
+    _InputCode: 608
   _InputType: 1
 --- !u!114 &1902574903
 MonoBehaviour:

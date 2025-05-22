@@ -30,6 +30,8 @@ namespace Loyufei.InputSystem
         /// </summary>
         public EInputCode InputCode => _InputCode;
 
+        internal IFakeKey FakeKey { get; private set; } = IFakeKey.Default;
+
         #endregion
 
         #region Constructor
@@ -51,12 +53,18 @@ namespace Loyufei.InputSystem
         public void Reset(int uuid, EInputCode inputCode)
         {
             _UUID = uuid;
-            _InputCode = inputCode;
+
+            Reset(inputCode);
         }
 
         public void Reset(EInputCode inputCode)
         {
             _InputCode = inputCode;
+
+            if ((int)inputCode >= 600) 
+            {
+                FakeKey = XInputDonetFakeInput.GetFakeKey(inputCode);
+            }
         }
 
         #endregion

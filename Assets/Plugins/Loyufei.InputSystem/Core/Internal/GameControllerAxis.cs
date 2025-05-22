@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using XInputDotNetPure;
+using static UnityEngine.EventSystems.StandaloneInputModule;
 
 namespace Loyufei.InputSystem
 {
@@ -9,13 +10,7 @@ namespace Loyufei.InputSystem
         private AxisPair    _Pair;
         private BindingPair _Positive;
         private BindingPair _Negative;
-
-        private int _GamePadIndex;
-
-        private float _HoldTime = 0f;
-        private float _ReleasedTime = 0f;
-        private float _DeltaTime = 0f;
-
+        
         public AxisPair    Pair     => _Pair;
         public BindingPair Positive => _Positive;
         public BindingPair Negative => _Negative;
@@ -25,19 +20,29 @@ namespace Loyufei.InputSystem
             _Pair  = pair;
             _Index = list.Index;
 
-            _GamePadIndex = _Index - 1;
-
             list.TryGet(Pair.PositiveIndex, out _Positive);
             list.TryGet(Pair.NegativeIndex, out _Negative);
         }
+
+        private float _AxisRaw;
+
+        private float _PressTime;
 
         public float Axis
         {
             get
             {
-                var axisRaw = AxisRaw;
+                if (AxisRaw != 0)
+                {
+                    _PressTime = _PressTime == 0 ? Time.realtimeSinceStartup : _PressTime;
 
-                return Mathf.Clamp01(Hold(!Equals(axisRaw, 0f))) * axisRaw;
+                    var passTime = Mathf.Clamp01(Time.realtimeSinceStartup - _PressTime);
+                    var result   = Mathf.Clamp01(passTime * (1 / Pair.Sensitive));
+
+                    return AxisRaw * result;
+                }
+
+                return 0f;
             }
         }
 
@@ -45,110 +50,20 @@ namespace Loyufei.InputSystem
         {
             get
             {
-                if (GetValue(Positive.InputCode)) { return _Pair.Revert ? -1 :  1; }
+                if ( Positive.FakeKey.GetKey(_Index) && _AxisRaw == 0f) { return (_AxisRaw = 1f); }
+                if ( Negative.FakeKey.GetKey(_Index) && _AxisRaw == 0f) { return (_AxisRaw = -1f); }
+                if (!Positive.FakeKey.GetKey(_Index) && _AxisRaw  > 0f) { return (_AxisRaw = 0f); }
+                if (!Negative.FakeKey.GetKey(_Index) && _AxisRaw  < 0f) { return (_AxisRaw = 0f); }
 
-				if (GetValue(Negative.InputCode)) { return _Pair.Revert ?  1 : -1; }
-
-                return 0;
+                return _Pair.Revert ? _AxisRaw * -1 : _AxisRaw;
             }
         }
 
-        private int _HoldFrame     = 0;
-        private int _ReleasedFrame = 0;
+        public bool KeyDown => Positive.FakeKey.GetKeyDown(_Index);
 
-        public bool KeyDown
-        {
-            get
-            {
-                if (_HoldFrame == 0)
-                {
-                    _HoldFrame = GetValue(Positive.InputCode) ? Time.frameCount : 0;
-                }
+        public bool Key     => Positive.FakeKey.GetKey(_Index);
 
-                return _HoldFrame == Time.frameCount;
-            }
-        }
-
-        public bool Key
-        {
-            get
-            {
-                return _HoldFrame != 0 && !KeyDown;
-            }
-        }
-
-        public bool KeyUp
-        {
-            get
-            {
-                if (_HoldFrame != 0) 
-                {
-                    if (!GetValue(Positive.InputCode)) 
-                    {
-                        _HoldFrame = 0;
-                        _ReleasedFrame = Time.frameCount;
-                    }
-                }
-
-                return _ReleasedFrame == Time.frameCount;
-            }
-        }
-
-        private bool GetValue(EInputCode inputCode)
-        {
-            if((int)inputCode < 600)
-            {
-                return false;
-            }
-
-            return GetValue(GamePad.GetState((PlayerIndex)_GamePadIndex), inputCode);
-        }
-
-        private bool GetValue(GamePadState state, EInputCode key)
-        {
-            if (key == EInputCode.JoystickA) { return state.Buttons.A == ButtonState.Pressed; }
-            if (key == EInputCode.JoystickB) { return state.Buttons.B == ButtonState.Pressed; }
-            if (key == EInputCode.JoystickX) { return state.Buttons.X == ButtonState.Pressed; }
-            if (key == EInputCode.JoystickY) { return state.Buttons.Y == ButtonState.Pressed; }
-
-            if (key == EInputCode.Start) { return state.Buttons.Start == ButtonState.Pressed; }
-            if (key == EInputCode.Back)  { return state.Buttons.Back  == ButtonState.Pressed; }
-
-            if (key == EInputCode.LS_B) { return state.Buttons.LeftStick  == ButtonState.Pressed; }
-            if (key == EInputCode.RS_B) { return state.Buttons.RightStick == ButtonState.Pressed; }
-
-            if (key == EInputCode.LB) { return state.Buttons.LeftShoulder  == ButtonState.Pressed; }
-            if (key == EInputCode.RB) { return state.Buttons.RightShoulder == ButtonState.Pressed; }
-
-            if (key == EInputCode.DPADUp)    { return state.DPad.Up    == ButtonState.Pressed; }
-            if (key == EInputCode.DPADDown)  { return state.DPad.Down  == ButtonState.Pressed; }
-            if (key == EInputCode.DPADLeft)  { return state.DPad.Left  == ButtonState.Pressed; }
-            if (key == EInputCode.DPADRight) { return state.DPad.Right == ButtonState.Pressed; }
-
-            if (key == EInputCode.LT) { return state.Triggers.Left  > 0; }
-            if (key == EInputCode.RT) { return state.Triggers.Right > 0; }
-
-            if (key == EInputCode.LSUp)    { return state.ThumbSticks.Left.Y > 0; }
-            if (key == EInputCode.LSDown)  { return state.ThumbSticks.Left.Y < 0; }
-            if (key == EInputCode.LSLeft)  { return state.ThumbSticks.Left.X < 0; }
-            if (key == EInputCode.LSRight) { return state.ThumbSticks.Left.X > 0; }
-
-            if (key == EInputCode.RSUp)    { return state.ThumbSticks.Right.Y > 0; }
-            if (key == EInputCode.RSDown)  { return state.ThumbSticks.Right.Y < 0; }
-            if (key == EInputCode.RSLeft)  { return state.ThumbSticks.Right.X < 0; }
-            if (key == EInputCode.RSRight) { return state.ThumbSticks.Right.X > 0; }
-
-            return false;
-        }
-
-        private float Hold(bool isHold)
-        {
-            if (!isHold) { return (_HoldTime = 0f); }
-
-            if (_HoldTime == 0) { _HoldTime = Time.realtimeSinceStartup; }
-
-            return Time.realtimeSinceStartup - _HoldTime;
-        }
+        public bool KeyUp   => Positive.FakeKey.GetKeyUp(_Index);
 
         public AxisValue GetValue()
         {
