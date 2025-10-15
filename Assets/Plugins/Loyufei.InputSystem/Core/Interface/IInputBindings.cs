@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Loyufei.InputSystem
 {
+    /// <summary>
+    /// 輸入鍵位清單，管理各個鍵位及重新綁定鍵位
+    /// </summary>
     public interface IInputBindings
     {
         /// <summary>
@@ -55,6 +58,6 @@ namespace Loyufei.InputSystem
         /// <param name="inputCode"></param>
         /// <param name="sameEncounter"></param>
         /// <returns></returns>
-        public InputRebindResult Rebinding(int uuid, EInputCode inputCode, ESameEncounter sameEncounter);
+        public InputRebindResult Rebinding(int uuid, EInputCode inputCode, ESameEncount sameEncounter);
     }
 }

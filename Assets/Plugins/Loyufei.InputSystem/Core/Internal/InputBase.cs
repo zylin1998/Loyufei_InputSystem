@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UnityEngine;
 
 namespace Loyufei.InputSystem
 {
@@ -36,16 +35,12 @@ namespace Loyufei.InputSystem
 
         public AxisValue this[string axisName] 
             => AxisNameDictionary.TryGetValue(axisName, out var axis) ? axis.GetValue() : new AxisValue();
-        
         public AxisValue this[int hashCode]
             => HashCodeDictionary.TryGetValue(hashCode, out var axis) ? axis.GetValue() : new AxisValue();
 
         public int              Index           { get; set; }
-
         public EInputType       InputType       { get; set; }
-
         public IAxisConstructor AxisConstructor { get; set; }
-
         public IInputBindings   Bindings        { get; private set; }
 
         #endregion

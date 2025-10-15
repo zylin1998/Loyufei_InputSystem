@@ -27,8 +27,6 @@ namespace Loyufei.InputSystem.RuntimeTest
 
         private void Start()
         {
-            var package = InputManager.FetchLists();
-
             Input = InputManager.FetchInput(GlobalParameter.PlayerIndex, GlobalParameter.InputType);
 
             _EventHashCode = Input.GetHashCode("Event");

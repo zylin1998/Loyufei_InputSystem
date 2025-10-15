@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Loyufei.InputSystem
 {
+    /// <summary>
+    /// 輸入軸資訊，用來取得輸入軸需綁定的輸入鍵位
+    /// </summary>
     public interface IInputAxis
     {
         /// <summary>

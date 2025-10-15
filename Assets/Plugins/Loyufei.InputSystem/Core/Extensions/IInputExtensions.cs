@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -166,7 +167,7 @@ namespace Loyufei.InputSystem
         /// <returns></returns>
         public static bool AnyKeyDown(this IInput self)
         {
-            return Input.anyKeyDown;
+            return Input.anyKeyDown || XInputDonetFakeInput.AnyKeyDown(self.Index);
         }
 
         /// <summary>
@@ -176,7 +177,7 @@ namespace Loyufei.InputSystem
         /// <returns></returns>
         public static bool AnyKey(this IInput self)
         {
-            return Input.anyKey;
+            return Input.anyKey || XInputDonetFakeInput.AnyKey(self.Index);
         }
 
         #region InputManager Method Adapt

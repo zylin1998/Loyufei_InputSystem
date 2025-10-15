@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Loyufei.InputSystem
 {
+    /// <summary>
+    /// 輸入頻道，可以取得輸入資訊
+    /// </summary>
     public interface IInput
     {
         /// <summary>

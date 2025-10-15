@@ -38,11 +38,11 @@ namespace Loyufei.InputSystem
         /// <summary>
         /// 輸入更換重疊時動作選擇
         /// </summary>
-        public static ESameEncounter SameEncounter
+        public static ESameEncount SameEncounter
         {
-            get => Instance.SameEncounter; 
+            get => Instance.SameEncount; 
             
-            set => Instance.SameEncounter = value; 
+            set => Instance.SameEncount = value; 
         }
 
         public static KeyCode[] KeyCodes { get; } 

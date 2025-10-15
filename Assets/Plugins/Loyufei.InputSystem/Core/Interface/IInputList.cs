@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Loyufei.InputSystem
 {
+    /// <summary>
+    /// 底層鍵位清單，只提供初始化及取得資料
+    /// </summary>
     public interface IInputList
     {
         /// <summary>

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Loyufei.InputSystem
 {
+    /// <summary>
+    /// 輸入鍵位重新綁定器
+    /// </summary>
     public interface IInputRebinder
     {
         /// <summary>

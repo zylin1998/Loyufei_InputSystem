@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Loyufei.InputSystem
@@ -122,7 +123,7 @@ namespace Loyufei.InputSystem
             return value.InputCode == inputCode;
         }
 
-        public InputRebindResult Rebinding(int uuid, EInputCode inputCode, ESameEncounter onSame)
+        public InputRebindResult Rebinding(int uuid, EInputCode inputCode, ESameEncount onSame)
         {
             var exist = TryGet(uuid, out var binding);
 

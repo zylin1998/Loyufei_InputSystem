@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Unity.VisualScripting.YamlDotNet.Serialization.NodeDeserializers;
 using UnityEngine;
 using XInputDotNetPure;
 
@@ -80,6 +79,9 @@ namespace Loyufei.InputSystem
         {
             A, B, X, Y, Start, Back, LS_B, RS_B, LB, RB, DPADUp, DPADDown, DPADLeft, DPADRight, LSUp, LSDown, LSLeft, LSRight, RSUp, RSDown, RSLeft, RSRight, LT, RT,
         };
+
+        public static bool AnyKeyDown(int playerIndex) => FakeKeys.Any(fakeKey => fakeKey.GetKeyDown(playerIndex));
+        public static bool AnyKey(int playerIndex) => FakeKeys.Any(fakeKey => fakeKey.GetKey(playerIndex));
 
         public static IFakeKey GetFakeKey(EInputCode inputCode) 
         {

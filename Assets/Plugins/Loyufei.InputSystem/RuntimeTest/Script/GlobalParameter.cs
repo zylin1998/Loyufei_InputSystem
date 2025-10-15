@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using XInputDotNetPure;
 
 namespace Loyufei.InputSystem.RuntimeTest
 {
@@ -25,6 +24,14 @@ namespace Loyufei.InputSystem.RuntimeTest
             if (Instance) { Destroy(Instance); }
             
             Instance = this;
+        }
+
+        private void OnDestroy()
+        {
+            if (Equals(Instance, this))
+            {
+                Instance = default;
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Loyufei.InputSystem
     /// <summary>
     /// 更換輸入重疊時動作種類
     /// </summary>
-    public enum ESameEncounter
+    public enum ESameEncount
     {
         None     = 0,
         Ignore   = 1,

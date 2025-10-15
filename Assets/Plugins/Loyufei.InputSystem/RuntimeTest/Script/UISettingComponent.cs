@@ -24,7 +24,7 @@ namespace Loyufei.InputSystem.RuntimeTest
         {
             gameObject.SetActive(false);
 
-            InputManager.SameEncounter = ESameEncounter.Exchange;
+            InputManager.SameEncounter = ESameEncount.Exchange;
         }
 
         private void OnEnable()
@@ -67,7 +67,7 @@ namespace Loyufei.InputSystem.RuntimeTest
         private async void Rebind(int uuid) 
         {
             _Mask.gameObject.SetActive(true);
-            Debug.Log("Rebind");
+            
             var result = await InputRebind.Rebind(uuid);
             
             if (result.Successed) 

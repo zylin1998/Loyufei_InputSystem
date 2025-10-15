@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Loyufei.InputSystem
 {
+    /// <summary>
+    /// 假按鍵，用以橋接按鍵以外多元輸入實現<see cref="UnityEngine.Input.GetKey(string)"/>及類似功能
+    /// </summary>
     internal interface IFakeKey
     {
         public EInputCode InputCode { get; }

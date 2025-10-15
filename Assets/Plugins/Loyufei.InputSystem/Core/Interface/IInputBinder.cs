@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Loyufei.InputSystem
 {
+    /// <summary>
+    /// 輸入綁定器，用於將輸入鍵位綁訂至輸入軸
+    /// </summary>
     public interface IInputBinder
     {
         public IInputBindings Bindings { get; }

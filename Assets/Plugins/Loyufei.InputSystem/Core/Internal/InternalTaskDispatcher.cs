@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using System.Threading.Tasks;
-using System.Threading;
-using static UnityEditor.Experimental.GraphView.GraphView;
-using static UnityEngine.UI.InputField;
 
 namespace Loyufei.InputSystem
 {
@@ -21,12 +19,13 @@ namespace Loyufei.InputSystem
         #endregion
 
         #region Fields
+
         [SerializeField]
-        private ESameEncounter   _SameEncounter = ESameEncounter.None;
+        private ESameEncount   _SameEncount = ESameEncount.None;
         [SerializeField]
         private UIControlInput   _UIControl;
         [SerializeField]
-        private List<InputLayer> _Layers        = new List<InputLayer>();
+        private List<InputLayer> _Layers = new List<InputLayer>();
         
         private readonly CancellationTokenSource _TokenSource = new();
 
@@ -36,11 +35,11 @@ namespace Loyufei.InputSystem
 
         internal UIControlInput UIControl => _UIControl;
 
-        internal ESameEncounter SameEncounter 
+        internal ESameEncount SameEncount 
         {
-            get => _SameEncounter; 
+            get => _SameEncount; 
             
-            set => _SameEncounter = value; 
+            set => _SameEncount = value; 
         }
 
         #endregion
@@ -230,7 +229,7 @@ namespace Loyufei.InputSystem
 
                 var list = binder.Bindings;
                 
-                return list.Rebinding(uuid, code, SameEncounter);
+                return list.Rebinding(uuid, code, SameEncount);
             }
 
             return new(false, 0, input.InputType, BindingPair.Default, BindingPair.Default);
@@ -395,6 +394,11 @@ namespace Loyufei.InputSystem
 
             public IInput GetInput(int index, IInputBindings inputBindings, EInputType inputType) 
             {
+                if (index > IndexCount) 
+                {
+                    return IInput.Default;
+                }
+
                 var exist = Inputs.TryGetValue(index, out var input);
 
                 if (!exist)

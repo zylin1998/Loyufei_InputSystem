@@ -10,13 +10,13 @@ namespace Loyufei.InputSystem
     {
         internal static Dictionary<object, IInputRebinder> Strategy { get; } = new()
         {
-            { ESameEncounter.None     , new NoneRebinder()},
-            { ESameEncounter.Ignore   , new IgnoreRebinder()},
-            { ESameEncounter.Delete   , new DeleteRebinder()},
-            { ESameEncounter.Exchange , new ExchangeRebinder()},
+            { ESameEncount.None     , new NoneRebinder()},
+            { ESameEncount.Ignore   , new IgnoreRebinder()},
+            { ESameEncount.Delete   , new DeleteRebinder()},
+            { ESameEncount.Exchange , new ExchangeRebinder()},
         };
 
-        internal static IInputRebinder GetRebinder(ESameEncounter encounter) 
+        internal static IInputRebinder GetRebinder(ESameEncount encounter) 
         {
             return Strategy[encounter];
         }

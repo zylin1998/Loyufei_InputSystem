@@ -564,7 +564,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b34719bdf6ee5b46beb4f431db92854, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _InputType: 1
+  _InputType: 0
   _PlayerIndex: 1
 --- !u!4 &137964513
 Transform:

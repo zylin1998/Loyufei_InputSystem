@@ -32,7 +32,7 @@ namespace Loyufei.InputSystem
 
         public void SetIndex(IInput input) 
         {
-            Input         = input;
+            Input = input;
 
             _CurrentIndex     = Input.Index;
             _CurrentInputType = Input.InputType;

@@ -1,6 +1,9 @@
-﻿using UnityEngine;
-using XInputDotNetPure;
-using static UnityEngine.EventSystems.StandaloneInputModule;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Loyufei.InputSystem
 {
